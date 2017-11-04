@@ -16,7 +16,7 @@
 ;               the string SeRiAl. 				    ;	
 ;-------------------------------------------------------------------;	
 
-mainseg	segment	para
+mainseg	segment	para 'CODE'
 	assume	cs:mainseg,ds:mainseg
 
 
