@@ -1,0 +1,11 @@
+Compile how-to
+
+Install required tools
+* Install Microsoft C 5.1 into \msc51
+* Install MASM %.1 into \masm51
+* copy \pcmos386v5501\bin\link.exe both to \masm51\bin and \msc51\bin.
+* place Borland make into bc\bin
+* delete all files from \pcmos386v5501\bin\ leaving only public.com and ts.com
+
+Set up env variables - run vars.bat from \pcmos386v5501\sources\src\
+Compile kernel - \bc\bin\make -f kernel.mak
