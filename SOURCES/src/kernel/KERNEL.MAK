@@ -55,7 +55,7 @@ OBJECTS = mosfront.obj mosliman.obj mosheman.obj mosint74.obj \
 	  mosddclk.obj mosrtask.obj mosdevs.obj  mosint17.obj \
 	  mosfun01.obj mosmiman.obj mositask.obj mosint15.obj \
 	  mosback.obj  mosfun44.obj mosfutl3.obj mosfutl2.obj \
-	  mosfutl4.obj mosint06.obj mossaver.obj mosnxtsk.obj \
+	  mosfutl4.obj mosint06.obj mossaver.obj mosnxtsk.obj 
 
 COMMON = mosint13 +mosddblk +mosddblf +mosliman +mosheman +mosddint \
 	 +mosint15 +mosddcon +mosint21 +mosfun00 +mosfun01 +mosfun0f \
@@ -65,12 +65,13 @@ COMMON = mosint13 +mosddblk +mosddblf +mosliman +mosheman +mosddint \
 	 +mosnxtsk +mosmisc +mosfutl2 +mosfutl3 +mosfutl4 +mosint74 \
 	 +mositask +mosinit
 
+all:	$$$$mos.sys $$$$eval.sys
+
 #==============================================================================
 #	Build the version of $$MOS.SYS
 #==============================================================================
 $$$$mos.sys : $(OBJECTS) mosinit2.obj
-	link mosfront +$(COMMON) +mosinit2 +mosback/m/se:512, \
-	$$$$mos.sys;
+	link /m /se:512 @kernelm.lnk
 	debug $$$$mos.sys <exe2bin.dat
 	ts $$$$mos.map/s
 
@@ -78,8 +79,7 @@ $$$$mos.sys : $(OBJECTS) mosinit2.obj
 #	Build the EVALUATION version of $$MOS.SYS
 #==============================================================================
 $$$$eval.sys : $(OBJECTS) mosini2e.obj
-	link mosfront +$(COMMON) +mosini2e +mosback/m/se:512, \
-	$$$$eval.sys;
+	link /m /se:512 @kernele.lnk 
 	debug $$$$eval.sys <exe2bin.dat
 	ts $$$$eval.map/s
 
@@ -236,4 +236,6 @@ mostcb.pub : mostcb.inc
 
 mosscbdf.pub : mosscbdf.inc
  		public mosscbdf.inc
-
+
+clean:
+	-del *.map *.sys *.obj
