@@ -26,13 +26,12 @@ http://www.cs.cmu.edu/~ralf/files.html
 (and yes Roeland's name is still in the book as well...)
 
 Tools used
-Microsoft MASM 5.1
-Microsoft C 5.1
-Borland make (tested with make from Borland C++ 4.5)
+* Microsoft MASM 5.1
+* Microsoft C 5.1
+* Borland make (tested with make from Borland C++ 4.5)
 
 Goals
-No dependence on Borland
-Investigate rsa lib
-Clean the repository a bit
-Do not disturb the master repo (so it is why this is a branched repo)
-
+* No dependence on Borland
+* Investigate rsa lib
+* Clean the repository a bit
+* Do not disturb the master repo (so it is why this is a branched repo)
