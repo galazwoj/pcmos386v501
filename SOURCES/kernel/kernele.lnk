@@ -1,0 +1,43 @@
+ mosfront.obj +
+ mosint13.obj +
+ mosddblk.obj +
+ mosddblf.obj +
+ mosliman.obj +
+ mosheman.obj +
+ mosddint.obj +
+ mosint15.obj +
+ mosddcon.obj +
+ mosint21.obj +
+ mosfun00.obj +
+ mosfun01.obj +
+ mosfun0f.obj +
+ mosfun39.obj +
+ mosfun44.obj +
+ mosfutil.obj +
+  mostemp.obj +
+ mossaver.obj +
+ mosint28.obj +
+ mosdebug.obj +
+ mosmiman.obj +
+ mosint38.obj +
+ moscntxt.obj +
+ mosddclk.obj +
+ mosrtask.obj +
+  mosdevs.obj +
+ mosint06.obj +
+ mosint10.obj +
+ mosint16.obj +
+ mosint17.obj +
+ mosddtmc.obj +
+ mosnxtsk.obj +
+  mosmisc.obj +
+ mosfutl2.obj +
+ mosfutl3.obj +
+ mosfutl4.obj +
+ mosint74.obj +
+ mositask.obj +
+  mosinit.obj +
+ mosini2e.obj +
+ mosback.obj 
+$$eval.sys
+$$eval.map;
