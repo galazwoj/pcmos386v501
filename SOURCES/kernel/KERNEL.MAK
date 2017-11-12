@@ -238,4 +238,4 @@ mosscbdf.pub : mosscbdf.inc
  		public mosscbdf.inc
 
 clean:
-	-del *.map *.sys *.obj
+	-del *.map *.sys *.obj *.pub *.pss
