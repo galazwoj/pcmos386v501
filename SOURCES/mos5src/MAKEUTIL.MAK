@@ -120,18 +120,25 @@
         del $*.pub
         del $*.obj
 
-ALL:    adddev.com  addtask.com  dirmap.com  alias.com  class.com  debug.com \
-        dirmap.com  diskcopy.com  diskid.com  filemode.com  \
-        format.com  hdsetup.com  keymap.com  monitor.com serinfo.com \
-        more.com mos.com  mosadm.com  mosdd7f.sys  moxcptsk.com  msys.com  \
-        netname.com  print.com  remdev.com  remtask.com  search.com \
-        setmouse.com  spool.com  verify.exe  _286n.sys  _386.sys  _all.sys \
-        _charge.sys  _ems.sys  _gizmo.sys  _kbbe.sys  _kbcf.sys  _kbdk.sys \
-        _kbfr.sys _kbgr.sys  _kbit.sys  _kbla.sys  _kbnl.sys  _kbno.sys \
-        _kbpo.sys  _kbsf.sys  _kbsg.sys  _kbsp.sys  _kbsv.sys  _kbuk.sys \
-        _mouse.sys  _netbios.sys  _pipe.sys  _ramdisk.sys  _serial.sys \
-        init.com   __shell.sys _arnet.sys filter.com  patchid.com \
-        minbrdpc.sys  mispeed.com compfile.exe helpgen.exe
+ALL:    f_com f_exe f_sys	
+
+f_com :	  adddev.com   addtask.com     alias.com     class.com    debug.com \
+          dirmap.com  diskcopy.com    diskid.com  filemode.com   format.com \
+         hdsetup.com    keymap.com   monitor.com   serinfo.com     more.com \
+             mos.com    mosadm.com  moxcptsk.com      msys.com  netname.com \
+           print.com    remdev.com   remtask.com    search.com  mispeed.com \
+        setmouse.com     spool.com  vidpatch.com    filter.com  patchid.com \
+   	    init.com   command.com	 sft.com
+
+f_exe:    verify.exe  compfile.exe   helpgen.exe	ed.exe  #  modem.exe
+
+f_sys:	 mosdd7f.sys     _286n.sys      _386.sys      _all.sys  _charge.sys \
+            _ems.sys    _gizmo.sys     _kbbe.sys     _kbcf.sys    _kbdk.sys \
+           _kbfr.sys     _kbgr.sys     _kbit.sys     _kbla.sys    _kbnl.sys \
+           _kbno.sys     _kbpo.sys     _kbsf.sys     _kbsg.sys    _kbsp.sys \
+           _kbsv.sys     _kbuk.sys    _mouse.sys  _netbios.sys    _pipe.sys \
+        _ramdisk.sys   _serial.sys   __shell.sys  minbrdpc.sys   _arnet.sys  \
+	updat501.sys
 
 ############ General purpose publics #############
 
@@ -262,9 +269,11 @@ remtask.com:    remtask.asm page.inc mostcb.inc mosscbdf.inc moxutl.inc \
 
 search.com:     search.asm page.inc version.inc
 
-serinfo.com:    serinfo.com
+serinfo.com:    serinfo.asm
 
 setmouse.com:   setmouse.asm page.inc
+
+sft.com:	sft.asm
 
 spool.com:      spool.asm page.inc options.inc mostcb.inc copyrit.inc \
                 verschk.inc
@@ -272,6 +281,12 @@ spool.com:      spool.asm page.inc options.inc mostcb.inc copyrit.inc \
                         link spool;
                         exe2bin spool spool.com
                         del spool.exe
+
+init.com:     	init.asm
+
+vidpatch.com:	vidpatch.asm
+
+command.com:	command.asm
 
 verify.exe:     verify.asm page.inc options.inc macros.inc dskstruc.inc
 
@@ -393,7 +408,6 @@ _kbuk.sys:      moskbuk.asm page.inc moskbfor.inc moskbinz.inc
         del $*.obj
         del $*.exe
 
-
 _mouse.sys:     _mouse.asm page.inc options.inc mosregs.inc xifmacs.inc \
                 mostcb.inc mosscbdf.inc genmouse.inc
 
@@ -425,7 +439,7 @@ _arnet.sys:    _arnet.asm page.inc options.inc jmpmacro.inc
         del _arnet.obj
         del _arnet.exe
 
-init.com:       init.asm
+updat501.sys: updat501.asm
 
 #******************************************************************************
 #       MOS Command processor - $$shell.sys
@@ -467,12 +481,22 @@ moxcppls.obj :  moxcppls.asm  page.inc  moxcpdat.inc  mosscbdf.inc \
 #
 compfile.exe: compfile.c
         cl -c compfile.c
-        link compfile/e,,,rsasmall
+        link compfile/e,,,rsasmall;
 
 helpgen.exe: helpgen.c
         cl -c helpgen.c
-        link helpgen/e,,,rsasmall
+        link helpgen/e,,,rsasmall;
 
 help.exe: help.pas help.inc
         tpc help
-
+
+ed.exe:	ed.c
+        cl -c ed.c
+        link ed/e,,,rsasmall;
+
+#modem.exe: modem.c keydef.h
+#        cl -c -I. modem.c
+#        link modem,,,;
+
+clean:
+	-del *.obj *.sys *.pub *.com *.exe *.map
