@@ -2355,7 +2355,7 @@ mos	equ	true
 ; code left in serial.sys, so we find the need we can put it. if so
 ; comment out the following equate
 
-DISABLE_CPUSPEED 	equ	1
+;DISABLE_CPUSPEED 	equ	1
 
 IFDEF DISABLE_CPUSPEED
 cpuspeed dw	0

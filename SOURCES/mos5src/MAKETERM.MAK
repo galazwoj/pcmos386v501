@@ -299,5 +299,5 @@ w7term.sys:	mosddtsh.asm  page.inc
         exe2bin $* $*.sys
         del $*.exe
 
-
-
+clean:
+	-del *.obj *.sys *.pub *.com *.exe

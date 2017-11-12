@@ -12,6 +12,9 @@
 ;                 rate divisor latch to avoid a potential       **DLAB**;
 ;                 system hang.                                  **DLAB**;
 ;************************************************************************
+; SAH 12/11/91  Added flags for disabling Rick's CPUSPEED from these    ;
+;		  Macros.						;
+;***********************************************************************;
 ;                                                                      	*
 ;	$SERIAL.SYS/EMULINK.SYS I/O Macros                             	*
 ;                                                                      	*
@@ -48,16 +51,17 @@ PRTCK	macro				; port verification
 ;       jmp     xxx
 ;
 
+IFNDEF  DISABLE_CPUSPEED
 cpuspeed  dw    30
 
 tickwait   proc near
     push   cx
-    mov    cx,[cpuspeed]
+    mov    cx,cs:[cpuspeed]
     loop   $
     pop    cx
     ret
 tickwait   endp
-
+ENDIF
 
 ENABLE_POGO macro
     DO_POGOS=true
@@ -71,9 +75,11 @@ ENABLE_POGO                             ; turn on POGOS be default!
 
 MAYBE_POGO macro
    IF DO_POGOS eq true
-;      JMP  $+2
-
-call  tickwait
+   	IFDEF DISABLE_CPUSPEED
+      		JMP  $+2
+  	ELSE
+		call  tickwait
+	ENDIF
    ENDIF
 endm
 
