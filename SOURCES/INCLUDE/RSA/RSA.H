@@ -10,10 +10,10 @@
 *
 *     PROGRAMMER:         B. W. Roeser
 *
-*     CREATION DATE:      3/28/89
+*     CREATION DATE:      7/12/90
 *
 *
-*       (C) Copyright 1989-1991 - Bruce W. Roeser
+*       (C) Copyright 1990-1992 The Software Link, Inc.
 *                   All Rights Reserved
 *
 *---------------------------------------------------------------------
@@ -45,20 +45,9 @@
 *
 * 1/15/91   BWR     Code cleanup.
 *
-**********************************************************************
-*
-*/
+***********************************************************************/
 
-/************ COMMENTED OUT !
-
-#ifndef FILE
-#define FILE struct _iobuf
-#endif
-
-#define _iobuf FILE
-
-*****************************/
-/* #define FOREVER while(1) */
+#define FOREVER while(1)
 #define TRUE    -1
 #define FALSE   0
 
@@ -83,8 +72,8 @@ int         convert_to_mono(int);
 int         copy_file(char *, char *);
 int         count_matching_files(char *);
 /*int         da_close(struct FILE *);
-int         da_read(struct FILE *, void *, unsigned);
-int         da_write(struct FILE *, void *, unsigned);*/
+int         da_read(struct FILE *, void *, unsigned);/*
+int         da_write(struct FILE *, void *, unsigned);
 int         display_help(char *, int);
 int         expand_file(char *, char *, int);
 int         get_string(char *, int, int);
@@ -94,7 +83,7 @@ int         is_color_video();
 int         rdcpos();
 int         read_mouse(int, int *, int *, int *);
 int         readed(int, int, int, int, int, void *);
-int         restore_video_region(int, int, void *);
+int         restore_video_region(int, int) /*, void *);*/
 int         select_option(int, int, char **, int, char *, char *, unsigned char);
 int         USR_connect(char *, char *);
 int         USR_menu(int, int);
@@ -113,7 +102,7 @@ void        display_copyright(char *);
 void        dputs(char *);
 void        draw_box(int, int, int, int, int);
 void        dump_buffer_to_screen(void *, int);
-/*void        ffill(struct FILE *, char, unsigned);*/
+/* void        ffill(struct FILE *, char, unsigned); */
 void        gtime(int *);
 void        input(char *, char *);
 void        just(char *, int, int);
@@ -139,7 +128,7 @@ void        write_DTA(void *, int);
 void        zap(void *, unsigned, char);
 
 char        *strstri(char *, char *);
-/*char        *get_line(char *, int, struct FILE *);*/
+/* char        *get_line(char *, int, struct FILE *); */
 /*
     Expanded Memory Manager function prototypes.
 */
@@ -160,3 +149,4 @@ int     EMM_get_page_map(void *);           /* EMM_4E.C  - F: 4E00 */
 int     EMM_set_page_map(void *);           /* EMM_4E.C  - F: 4E01 */
 int     EMM_get_set_page_map(void *, void *); /* EMM_4E.C - F: 4E02 */
 int     EMM_get_page_map_size(int *);       /* EMM_4E.C  - F: 4E03 */
+

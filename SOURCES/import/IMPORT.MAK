@@ -23,14 +23,19 @@
         cl -c $<
 
 .asm.obj:
-        masm -Mx $*;
+        masm -Mx -I..\kernel $*;
 
 OBJECTS =       import.obj  parse.obj  decomp.obj  get_next.obj \
                 term.obj  mos_util.obj  globals.obj
-
 OBJLIST =       import +parse +decomp +get_next +term +mos_util +globals
 
-LIBRARIES = ${LIB}\RSASMALL.LIB
+LIBRARIES = ..\libs\RSASMALL.LIB
+
+all:	import.exe
 
 import.exe : $(OBJECTS) $(LIBRARIES)
         link $(OBJLIST)/e,,,rsasmall
+
+clean:
+	-del *.obj *.pub *.exe *.map
+

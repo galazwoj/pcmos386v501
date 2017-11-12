@@ -251,7 +251,6 @@ mjs 02/01/93	changes actually made: 1/6/93 -- 1/7/93.
 #include <malloc.h>
 #include <dos.h>
 #include <io.h>
-#include <dir.h>
 #include <string.h>
 #include <ctype.h>
 #include <fcntl.h>
@@ -261,6 +260,11 @@ mjs 02/01/93	changes actually made: 1/6/93 -- 1/7/93.
 
 #include "ulib.h"
 
+#define MAXPATH   80
+#define MAXDRIVE  3
+#define MAXDIR    66
+#define MAXFILE   9
+#define MAXEXT    5
 
 // prototypes for expasm.asm
 
@@ -269,7 +273,7 @@ void setup_i2324(void);
 
 #define BUF_SIZE 24 * 1024
 
-typedef struct ffblk DTA;
+typedef struct find_t DTA;
 
 typedef struct {
  byte file_attrib;
@@ -411,12 +415,12 @@ void kill_directory(byte *parent, byte *dir_name) {
   first = 1;
   while(1) {
     if(first) {
-      err_stat = findfirst(current_path,&d,0x10);
+      err_stat = _dos_findfirst(current_path,0x10,&d);
       *tptr = 0;
       first = 0;
       }
     else {
-      err_stat = findnext(&d);
+      err_stat = _dos_findnext(&d);
       }
     if(err_stat) {
       if(_doserrno == 0x12) {
@@ -427,11 +431,11 @@ void kill_directory(byte *parent, byte *dir_name) {
         exit(1);
         }
       }
-    if(d.ff_attrib & 0x10) {
-      if(d.ff_name[0] == '.') {
+    if(d.attrib & 0x10) {
+      if(d.name[0] == '.') {
         continue;
         }
-      kill_directory(current_path,d.ff_name);
+      kill_directory(current_path,d.name);
       }
     }
 
@@ -501,12 +505,12 @@ word initialize_drive(word drive) {
   first = 1;
   while(1) {
     if(first) {
-      err_stat = findfirst(current_path,&d,0x10);
+      err_stat = _dos_findfirst(current_path,0x10,&d);
       *tptr = 0;
       first = 0;
       }
     else {
-      err_stat = findnext(&d);
+      err_stat = _dos_findnext(&d);
       }
     if(err_stat) {
       if(_doserrno == 0x12) {
@@ -517,8 +521,8 @@ word initialize_drive(word drive) {
         exit(1);
         }
       }
-    if(d.ff_attrib & 0x10) {
-      kill_directory(current_path,d.ff_name);
+    if(d.attrib & 0x10) {
+      kill_directory(current_path,d.name);
       }
     }
 
@@ -781,9 +785,9 @@ word write_output_file(byte *ifil, byte *ofil, byte *dpath, FINFO fin) {
 
     regs.x.ax = 0x0300;
     regs.x.dx = (word)ifil;
-    segregs.ds = _DS;
     regs.x.bx = (word)spec_buffer;
-    segregs.es = _DS;
+    segread(&segregs);
+    segregs.es = segregs.ds;
     int86x(0xd4,&regs,&regs,&segregs);
     *tcbcdftPtr.bptr = spec_buffer[1];
     sensitive = 1;
@@ -928,7 +932,7 @@ word output_file(byte *input_file) {
 
   // prep name and path strings
 
-  fnsplit(input_file, drive, dir, fname, ext);
+  _splitpath(input_file, drive, dir, fname, ext);
   strcpy(fin.filename, fname);
   strcat(fin.filename, ext);
 
@@ -1451,12 +1455,12 @@ int main(int argc, char *argv[]) {
   // spec.
 
   attr = _chmod(source_arg,0);
-  if(attr != 0xffff && attr & FA_DIREC) {
+  if(attr != 0xffff && attr & _A_SUBDIR) {
     strcpy(pathname,source_arg);
     strcpy(srchspec,"*.*");
     }
   else {
-    fnsplit(source_arg,drive,dir,fname,ext);
+    _splitpath(source_arg,drive,dir,fname,ext);
     strcpy(pathname,drive);
     strcat(pathname,dir);
     strcpy(srchspec,fname);
@@ -1505,4 +1509,16 @@ int main(int argc, char *argv[]) {
     }
   return(0);
   }
+
+#include <errno.h>
+
+int _chmod(char *pathname, int func, int attrib )
+{
+	if (func == 0)	
+		return _dos_getfileattr(pathname, &attrib);
+	if (func == 1)
+		return _dos_setfileattr(pathname, attrib);
+	errno = EACCES;
+	return -1;
+}	
 

@@ -54,7 +54,7 @@ PAGE 90, 132
 ;
 ; DATE          PROG    DESCRIPTION OF REVISION
 ; ----          ----    -----------------------
-;
+; 03/31/92	SAH     replace RSA lib function _set_volume_label
 ;****************************************************************************
 ;
 TCB             segment at      01234h
@@ -77,6 +77,7 @@ endif
 
         PUBLIC  _Save_TCB_data, _Restore_TCB_data, _Get_file_specs
         PUBLIC  _Get_break_flag, _Set_break_flag
+	PUBLIC  _Set_Volume_Label
 
 _default_class  db      ?
 _TCB_seg        dw      0
@@ -234,9 +235,107 @@ endif
 
 _get_break_flag         endp
 
+
+filename	db	'?:\'
+fname		db	13 dup (0)
+delfcb		db	0ffh			; extended fcb
+		db	5 dup (0)
+		db	8
+drvfcb		db	?
+		db	'????????'
+		db	'???'
+		dw	?
+		dw	?
+		db	4 dup (?)
+		dw	?
+		dw	?
+		db	8 dup (?)
+		db	?
+		db	4 dup (?)
+
+;
+; Set_Volume_label
+;
+; This is a replace for one of the functions in RSASMALL.LIB
+; Unfortunately we don't have the source to this libarary and
+; Bruce is gone! and the function in the library has a bug, it
+; does not close the handle it opens up.  The following is
+; a replacement for this function which was disable from the object
+; module.
+;
+
+_set_volume_label	proc	near
+	push	bp
+	mov	bp,sp
+	push	ds
+	push	es
+	push	si
+	push	di
+
+	cld
+	mov	ax,[bp+04]		; get drive
+	or	al,al
+	jnz	sv1			; is it default????
+	mov	ah,19h
+	int	21h			; get default drive
+	inc	al
+sv1:
+	mov	cs:[drvfcb],al	
+	dec	al
+	add	al,'A'
+	mov	cs:[filename],al
+	mov	si,[bp+06]		; get offset to volume name
+	mov	ax,cs
+	mov	es,ax
+	mov	di,offset fname
+	xor	cx,cx
+sv2:
+	lodsb
+	inc	cx
+	cmp	cx,9
+	jne	sv3
+	mov	byte ptr es:[di],'.'
+	inc	di
+	xor	cx,cx
+sv3:
+	stosb	   			; store charater in buffer
+	or	al,al
+	jnz	sv2
+	mov	ax,cs
+	mov	ds,ax
+	mov	ah,13h
+	mov	dx,offset delfcb
+	int	21h
+	mov	ah,3ch
+	mov	cx,8
+	mov	dx,offset filename
+	int	21h
+	jc	sverror
+;
+; must close the file handle bruce!!!!!!!
+;
+	mov	bx,ax
+	mov	ah,3eh			; close the handle
+	int	21h			
+	xor	ax,ax
+	jmp	short svexit
+;
+sverror:
+	mov	ax,2			; he return 2 if error
+svexit:
+
+	pop	di
+	pop	si
+	pop	es
+	pop	ds
+	pop	bp
+	ret
+_set_volume_label endp
+
 ifdef   LARGE
 mos_util_text   ends
 else
 _text   ends
 endif
         end
+

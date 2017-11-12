@@ -26,14 +26,13 @@
 .asm.obj:
         masm -Mx $*;
 
-OBJECTS =       export.obj  parse.obj  get_next.obj  output.obj \
-                compress.obj init_drv.obj term.obj  mos_util.obj \
-                globals.obj
-
-OBJLIST =       export +parse +output +get_next +compress +init_drv \
-                +term +mos_util +globals
-
-LIBRARIES = ${LIB}\RSASMALL.LIB
+OBJECTS =       export.obj   expasm.obj 
+OBJLIST =       export +expasm 
+LIBRARIES = ..\libs\ULIB.LIB
 
 export.exe : $(OBJECTS) $(LIBRARIES)
-        link $(OBJLIST)/e,,,rsasmall
+        link $(OBJLIST)/e,,, ulib
+
+clean:
+	-del *.obj *.pub *.exe *.map
+
