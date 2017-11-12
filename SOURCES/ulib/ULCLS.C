@@ -21,8 +21,6 @@ mjs 04/01/92	created this module
 
 #include <stdlib.h>
 #include <dos.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 extern byte ul_vidrows;		// # of display columns

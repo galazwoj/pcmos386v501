@@ -19,12 +19,10 @@ mjs 12/10/92	created this module
 =======================================================================
 */
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <dos.h>
-#include <dir.h>
 #include <string.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -45,7 +43,7 @@ word ul_trace_dir(byte *dpbuf, fspc_type *fsptr) {
 
   byte *orig_end;			// ptr to original end of dpbuf
   byte *trunc_ptr;			// used to maintain wbuf
-  struct ffblk ffblk;			// structure for findfirst/next
+  struct find_t ffblk;			// structure for findfirst/next
   word err_stat;			// holds error status
 
 
@@ -68,12 +66,12 @@ word ul_trace_dir(byte *dpbuf, fspc_type *fsptr) {
 
   while(1) {
     if(trunc_ptr != NULL) {
-      err_stat = findfirst(dpbuf,&ffblk,fsptr->search_attr);
+      err_stat = _dos_findfirst(dpbuf,fsptr->search_attr,&ffblk);
       *trunc_ptr = 0;
       trunc_ptr = NULL;
       }     
     else {
-      err_stat = findnext(&ffblk);
+      err_stat = _dos_findnext(&ffblk);
       }
     if(err_stat != 0) {
       if(_doserrno == 0x12) {
@@ -88,7 +86,7 @@ word ul_trace_dir(byte *dpbuf, fspc_type *fsptr) {
     // for each file found, call the work function with a
     // pointer to dpbuf, the found name and its attribute.
 
-    if((*(fsptr->work_func))(dpbuf,ffblk.ff_name,ffblk.ff_attrib) != 0) {
+    if((*(fsptr->work_func))(dpbuf,ffblk.name,ffblk.attrib) != 0) {
       *orig_end = 0;
       return(4);
       }

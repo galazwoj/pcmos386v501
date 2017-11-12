@@ -19,13 +19,11 @@ mjs 12/10/92	created this module
 =======================================================================
 */
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <dos.h>
-#include <dir.h>
 #include <string.h>
 #include <malloc.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 //==== internal data structure
@@ -110,7 +108,7 @@ word ul_trace_dirl(byte *dpbuf, fspc_type *fsptr) {
 
   byte *orig_end;			// ptr to original end of dpbuf
   byte *trunc_ptr;			// used to maintain wbuf
-  struct ffblk ffblk;			// structure for findfirst/next
+  struct find_t ffblk;			// structure for findfirst/next
   word err_stat;			// holds error status
   fntype *root_lptr = NULL;		// root of the heap list of fnames
   fntype *lptr = NULL;			// used to build heap list
@@ -137,10 +135,10 @@ word ul_trace_dirl(byte *dpbuf, fspc_type *fsptr) {
   while(1) {
 
     if(root_lptr == NULL) {
-      err_stat = findfirst(dpbuf,&ffblk,fsptr->search_attr);
+      err_stat = _dos_findfirst(dpbuf,fsptr->search_attr,&ffblk);
       }     
     else {
-      err_stat = findnext(&ffblk);
+      err_stat = _dos_findnext(&ffblk);
       }
     if(err_stat != 0) {
       if(_doserrno == 0x12) {
@@ -162,8 +160,8 @@ word ul_trace_dirl(byte *dpbuf, fspc_type *fsptr) {
       return(1);
       }
     lptr->next = NULL;
-    strcpy(lptr->fname,ffblk.ff_name);
-    lptr->attr = ffblk.ff_attrib;
+    strcpy(lptr->fname,ffblk.name);
+    lptr->attr = ffblk.attrib;
     if(last_lptr == NULL) {
       root_lptr = lptr;
       }     

@@ -21,8 +21,6 @@ mjs 04/01/92	created this module
 
 #include <stdlib.h>
 #include <conio.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -39,11 +37,7 @@ mjs 04/01/92	created this module
 ========================================================================*/
 void ul_eat_key(void) {
 
-  byte t;
-
   while(ul_if_key()) {
-    t = ul_get_key();
+    (void) ul_get_key();
     }
   }
-
-

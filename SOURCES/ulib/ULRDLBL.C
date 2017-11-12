@@ -20,12 +20,8 @@ mjs 12/15/92	created this module
 */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <dos.h>
-#include <dir.h>
 #include <string.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -41,7 +37,7 @@ mjs 12/15/92	created this module
 ========================================================================*/
 void ul_read_dsklbl(byte drvnum, byte *lbuf) {
 
-  struct ffblk ffblk;			// structure for findfirst/next
+  struct find_t ffblk;			// structure for findfirst/next
   word err_stat;			// holds error status
   byte first;
   byte search_spec[8];
@@ -51,20 +47,20 @@ void ul_read_dsklbl(byte drvnum, byte *lbuf) {
   first = 1;
   while(1) {
     if(first) {
-      err_stat = findfirst(search_spec,&ffblk,8);
+      err_stat = _dos_findfirst(search_spec,8,&ffblk);
       first = 0;
       }     else {
-      err_stat = findnext(&ffblk);
+      err_stat = _dos_findnext(&ffblk);
       }
     if(err_stat) {
       return;
       }
-    if(ffblk.ff_attrib & 8) {
-      if(strlen(ffblk.ff_name) > 8) {
-        strncpy(lbuf,ffblk.ff_name,8);
-        strcpy(&lbuf[8],&ffblk.ff_name[9]);
+    if(ffblk.attrib & 8) {
+      if(strlen(ffblk.name) > 8) {
+        strncpy(lbuf,ffblk.name,8);
+        strcpy(&lbuf[8],&ffblk.name[9]);
         }       else {
-        strcpy(lbuf,ffblk.ff_name);
+        strcpy(lbuf,ffblk.name);
         }
       return;
       }

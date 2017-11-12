@@ -19,13 +19,11 @@ mjs 04/01/92	created this module
 =======================================================================
 */
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <dos.h>
-#include <mem.h>
 #include <ctype.h>
 #include <string.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================

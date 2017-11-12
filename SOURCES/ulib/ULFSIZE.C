@@ -23,8 +23,6 @@ mjs 12/15/92	created this module
 #include <dos.h>
 #include <io.h>
 #include <stdio.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================

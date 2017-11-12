@@ -22,9 +22,6 @@ mjs 05/21/92	created this module
 #include <stdlib.h>
 #include <dos.h>
 #include <string.h>
-#include <mem.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -89,7 +86,7 @@ byte ul_expand_tabs(byte *eptr, byte ts, word maxlen) {
       // if any tail exists, move it
 
       if(tail_len) {
-        movmem(eptr,(eptr+add_blanks),tail_len);
+        memmove((eptr+add_blanks),eptr,tail_len);
         }
 
       // write in the blanks, insure proper termination

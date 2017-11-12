@@ -20,11 +20,8 @@ mjs 12/15/92	created this module
 */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <dos.h>
 #include <string.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -52,7 +49,7 @@ void ul_write_dsklbl(byte drv, byte *lbl) {
   strncpy(&FCB[8],"???????????",11);
   regs.h.ah = 0x13;
   regs.x.dx = (unsigned)FCB;
-  segregs.ds = _DS;
+  segread(&segregs); 
   int86x(0x21,&regs,&regs,&segregs);
   fname[0] = drv + 'A' - 1;
   fname[1] = ':';
@@ -68,7 +65,7 @@ void ul_write_dsklbl(byte drv, byte *lbl) {
   regs.h.ah = 0x3c;
   regs.x.cx = 8;
   regs.x.dx = (word)fname;
-  segregs.ds = _DS;
+  segread(&segregs); 
   int86x(0x21,&regs,&regs,&segregs);
   regs.x.bx = regs.x.ax;
   regs.h.ah = 0x3e;

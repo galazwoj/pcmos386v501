@@ -23,27 +23,23 @@
 # of its parameters.
 #
 #======================================================================
-# 
-# required switches:
-#
-# -Dcdir=d:\cutils   (substitute your cutils directory for 'd:\cutils')
-#
 
 #==== implicit rules
 
+# Microsoft LIB does not work under Windows Vista, 
+# vas a teporary workaround Borland TLIB is used
+
 .c.obj:
-    bcc -c -I$(cdir) $&.c
-    tlib ulib -+$&.obj
-    del ulib.xxx
+    cl -c -I. -I..\include $&.c
+    \bc45\bin\tlib ulib -+$&.obj
 
 .asm.obj:
     masm /mx /z $&;
-    tlib ulib -+$&.obj
-    del ulib.xxx
+    \bc45\bin\tlib ulib -+$&.obj
 
 #==== the main target
 
-ulib.xxx :	ulbeep.obj   ulstr2v.obj  ulclrbox.obj uldrwbox.obj \
+ulib.lib :	ulbeep.obj   ulstr2v.obj  ulclrbox.obj uldrwbox.obj \
 		ulsetvpt.obj uldrwhbr.obj uldrwvbr.obj uldspdec.obj \
 		ulsetatr.obj ulscrlup.obj ulsetcur.obj ulgetkey.obj \
 		ulchar2v.obj ulgetkst.obj ulscrldn.obj ulgetcur.obj \
@@ -52,55 +48,56 @@ ulib.xxx :	ulbeep.obj   ulstr2v.obj  ulclrbox.obj uldrwbox.obj \
 		ulgetstr.obj ulgetxy.obj  ulgetcho.obj ulanyfil.obj \
 		ulremfil.obj ulexptab.obj ultrdir.obj  ultrdirl.obj \
 		ulwalktr.obj ulismos.obj  ulmkpth.obj  ulfsize.obj  \
-		ulwrlbl.obj  ulrdlbl.obj  ulformt.obj  ulqualt.obj
-
-    genndx
-    echo x>ulib.xxx
-
+		ulwrlbl.obj  ulrdlbl.obj  ulformt.obj  ulqualt.obj  \
+		misc.obj
+	-del ulib.bak
+	copy ulib.lib ..\libs
 #==== c dependencies
 
-ulbeep.obj	: ulbeep.c	$(cdir)\ulib.h
-ulstr2v.obj	: ulstr2v.c	$(cdir)\ulib.h
-ulclrbox.obj	: ulclrbox.c	$(cdir)\ulib.h
-ulcls.obj	: ulcls.c	$(cdir)\ulib.h
-uldrwbox.obj	: uldrwbox.c	$(cdir)\ulib.h
-ulfilbox.obj	: ulfilbox.c	$(cdir)\ulib.h
-ulsetvpt.obj	: ulsetvpt.c	$(cdir)\ulib.h
-uldrwhbr.obj	: uldrwhbr.c	$(cdir)\ulib.h
-uldrwvbr.obj	: uldrwvbr.c	$(cdir)\ulib.h
-uldspdec.obj	: uldspdec.c	$(cdir)\ulib.h
-ulsetatr.obj	: ulsetatr.c	$(cdir)\ulib.h
-ulscrlup.obj	: ulscrlup.c	$(cdir)\ulib.h
-ulsetcur.obj	: ulsetcur.c	$(cdir)\ulib.h
-ulgetcur.obj	: ulgetcur.c	$(cdir)\ulib.h
-ulgetkey.obj	: ulgetkey.c	$(cdir)\ulib.h
-uleatkey.obj	: uleatkey.c	$(cdir)\ulib.h
-ulifkey.obj	: ulifkey.c	$(cdir)\ulib.h
-ulchar2v.obj	: ulchar2v.c	$(cdir)\ulib.h
-ulgetkst.obj	: ulgetkst.c	$(cdir)\ulib.h
-ulscrldn.obj	: ulscrldn.c	$(cdir)\ulib.h
-ulmessag.obj	: ulmessag.c	$(cdir)\ulib.h
-ulopclwn.obj	: ulopclwn.c	$(cdir)\ulib.h
-ulview.obj	: ulview.c	$(cdir)\ulib.h
-ulgetstr.obj	: ulgetstr.c	$(cdir)\ulib.h
-ulgetxy.obj	: ulgetxy.c	$(cdir)\ulib.h
-ulgetcho.obj	: ulgetcho.c	$(cdir)\ulib.h
-ulanyfil.obj	: ulanyfil.c	$(cdir)\ulib.h
-ulremfil.obj	: ulremfil.c	$(cdir)\ulib.h
-ulexptab.obj	: ulexptab.c	$(cdir)\ulib.h
-ultrdir.obj	: ultrdir.c	$(cdir)\ulib.h
-ultrdirl.obj	: ultrdirl.c	$(cdir)\ulib.h
-ulwalktr.obj	: ulwalktr.c	$(cdir)\ulib.h
-ulismos.obj	: ulismos.c	$(cdir)\ulib.h
-ulmkpth.obj	: ulmkpth.c	$(cdir)\ulib.h
-ulfsize.obj	: ulfsize.c	$(cdir)\ulib.h
-ulwrlbl.obj	: ulwrlbl.c	$(cdir)\ulib.h
-ulrdlbl.obj	: ulrdlbl.c	$(cdir)\ulib.h
-ulformt.obj	: ulformt.c	$(cdir)\ulib.h
-ulqualt.obj	: ulqualt.c	$(cdir)\ulib.h
-
+ulbeep.obj	: ulbeep.c	..\include\ulib.h
+ulstr2v.obj	: ulstr2v.c	..\include\ulib.h
+ulclrbox.obj	: ulclrbox.c	..\include\ulib.h
+ulcls.obj	: ulcls.c	..\include\ulib.h
+uldrwbox.obj	: uldrwbox.c	..\include\ulib.h
+ulfilbox.obj	: ulfilbox.c	..\include\ulib.h
+ulsetvpt.obj	: ulsetvpt.c	..\include\ulib.h
+uldrwhbr.obj	: uldrwhbr.c	..\include\ulib.h
+uldrwvbr.obj	: uldrwvbr.c	..\include\ulib.h
+uldspdec.obj	: uldspdec.c	..\include\ulib.h
+ulsetatr.obj	: ulsetatr.c	..\include\ulib.h
+ulscrlup.obj	: ulscrlup.c	..\include\ulib.h
+ulsetcur.obj	: ulsetcur.c	..\include\ulib.h
+ulgetcur.obj	: ulgetcur.c	..\include\ulib.h
+ulgetkey.obj	: ulgetkey.c	..\include\ulib.h
+uleatkey.obj	: uleatkey.c	..\include\ulib.h
+ulifkey.obj	: ulifkey.c	..\include\ulib.h
+ulchar2v.obj	: ulchar2v.c	..\include\ulib.h
+ulgetkst.obj	: ulgetkst.c	..\include\ulib.h
+ulscrldn.obj	: ulscrldn.c	..\include\ulib.h
+ulmessag.obj	: ulmessag.c	..\include\ulib.h
+ulopclwn.obj	: ulopclwn.c	..\include\ulib.h
+ulview.obj	: ulview.c	..\include\ulib.h
+ulgetstr.obj	: ulgetstr.c	..\include\ulib.h
+ulgetxy.obj	: ulgetxy.c	..\include\ulib.h
+ulgetcho.obj	: ulgetcho.c	..\include\ulib.h
+ulanyfil.obj	: ulanyfil.c	..\include\ulib.h
+ulremfil.obj	: ulremfil.c	..\include\ulib.h
+ulexptab.obj	: ulexptab.c	..\include\ulib.h
+ultrdir.obj	: ultrdir.c	..\include\ulib.h
+ultrdirl.obj	: ultrdirl.c	..\include\ulib.h
+ulwalktr.obj	: ulwalktr.c	..\include\ulib.h
+ulismos.obj	: ulismos.c	..\include\ulib.h
+ulmkpth.obj	: ulmkpth.c	..\include\ulib.h
+ulfsize.obj	: ulfsize.c	..\include\ulib.h
+ulwrlbl.obj	: ulwrlbl.c	..\include\ulib.h
+ulrdlbl.obj	: ulrdlbl.c	..\include\ulib.h
+ulformt.obj	: ulformt.c	..\include\ulib.h
+ulqualt.obj	: ulqualt.c	..\include\ulib.h
+                                
 #==== asm dependencies
 
 ulsvrswn.obj	: ulsvrswn.asm
-
-
+misc.obj	: misc.asm
+	
+clean:
+	-del *.lib *.obj

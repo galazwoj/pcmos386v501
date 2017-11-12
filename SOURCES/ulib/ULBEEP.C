@@ -21,8 +21,6 @@ mjs 04/01/92	created this module
 
 #include <stdlib.h>
 #include <dos.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -45,5 +43,6 @@ void ul_beep(void) {
   delay(30);
   nosound();
   }
+
 
 

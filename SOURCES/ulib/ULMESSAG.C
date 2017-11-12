@@ -23,8 +23,6 @@ mjs 04/01/92	created this module
 #include <stdio.h>
 #include <malloc.h>
 #include <string.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 #define getmsgtag	1

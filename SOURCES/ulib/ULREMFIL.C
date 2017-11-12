@@ -21,11 +21,8 @@ mjs 04/01/92	created this module
 
 #include <stdlib.h>
 #include <dos.h>
-#include <dir.h>
 #include <io.h>
 #include <string.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -40,11 +37,18 @@ mjs 04/01/92	created this module
 ;
 ;,fe
 ========================================================================*/
+
+#define MAXPATH   80
+#define MAXDRIVE  3
+#define MAXDIR    66
+#define MAXFILE   9
+#define MAXEXT    5
+
 byte ul_remove_files(byte *filespec, byte search_attr) {
 
   word first;				// controls findfirst/next calls
   word err_stat;			// holds error status
-  struct ffblk ffblk;			// for findfirst/next
+  struct find_t ffblk;			// for findfirst/next
   byte drvstr[MAXDRIVE];		// for fnsplit
   byte pathstr[MAXDIR];			// for fnsplit
   byte fnamestr[MAXFILE];		// for fnsplit
@@ -53,18 +57,18 @@ byte ul_remove_files(byte *filespec, byte search_attr) {
   byte *trunc_ptr;			// used to maintain wbuf
   word attr;				// each file's attribute
 
-  fnsplit(filespec,drvstr,pathstr,fnamestr,extstr);
+  _splitpath(filespec,drvstr,pathstr,fnamestr,extstr);
   strcpy(wbuf,drvstr);
   strcat(wbuf,pathstr);
   trunc_ptr = strchr(wbuf,0);
   first = 1;
   while(1) {
     if(first) {
-      err_stat = findfirst(filespec,&ffblk,search_attr);
+      err_stat = _dos_findfirst(filespec,search_attr, &ffblk);
       first = 0;
       }
     else {
-      err_stat = findnext(&ffblk);
+      err_stat = _dos_findnext(&ffblk);
       }
     if(err_stat != 0) {
       if(_doserrno == 0x12) {
@@ -74,14 +78,14 @@ byte ul_remove_files(byte *filespec, byte search_attr) {
         return(1);
         }
       }
-    strcat(wbuf,ffblk.ff_name);
-    if(search_attr != FA_NORMAL) {
+    strcat(wbuf,ffblk.name);
+    if(search_attr != _A_NORMAL) {
       attr = _chmod(wbuf,0);
       if(attr == 0xffff) {
         return(1);
         }
       if(attr & search_attr) {
-        attr = _chmod(wbuf,1,FA_NORMAL);
+        attr = _chmod(wbuf,1,_A_NORMAL);
         if(attr == 0xffff) {
           return(1);
           }

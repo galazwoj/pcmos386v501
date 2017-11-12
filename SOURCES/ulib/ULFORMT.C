@@ -21,9 +21,6 @@ mjs 12/17/92	created this module
 
 #include <stdlib.h>
 #include <dos.h>
-#include <mem.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -55,9 +52,9 @@ byte ul_form_template(byte *filespec, byte *template) {
   memset(fcb,0,37);
   regs.x.ax = 0x2903;
   regs.x.si = (word) filespec;
-  sregs.ds = _DS;
   regs.x.di = (word) &fcb[0];
-  sregs.es = _DS;
+  segread(&sregs);
+  sregs.es = sregs.ds;
   int86x(0x21,&regs,&regs,&sregs);
   memcpy(template,&fcb[1],11);
   return(regs.h.al);

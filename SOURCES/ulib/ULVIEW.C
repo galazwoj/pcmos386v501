@@ -23,11 +23,8 @@ mjs 05/21/92	reworked to support large files and tab expansion
 
 #include <stdlib.h>
 #include <dos.h>
-#include <mem.h>
 #include <string.h>
 #include <stdio.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 extern byte ul_vidrows;
@@ -256,7 +253,7 @@ static byte forward_load(void) {
   // move the remainder of the pointers to the front of the array.
   // and mark the pointers in that leftover area as free.
 
-  movmem(&ln_array[HYST_FCTR],&ln_array[0],FLS_BYTES);
+  memmove(&ln_array[0],&ln_array[HYST_FCTR],FLS_BYTES);
   for(x=0;x<HYST_FCTR;x++) {
     ln_array[FL_START+x] = NULL;
     }

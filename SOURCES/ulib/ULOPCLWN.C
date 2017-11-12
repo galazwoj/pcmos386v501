@@ -18,12 +18,10 @@ mjs 04/01/92	created this module
 
 =======================================================================
 */
-
+#include <stddef.h>
 #include <stdlib.h>
 #include <dos.h>
 #include <malloc.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================

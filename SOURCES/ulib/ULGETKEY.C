@@ -19,10 +19,9 @@ mjs 04/01/92	created this module
 =======================================================================
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 static byte (*filter_hook)(byte) = NULL;

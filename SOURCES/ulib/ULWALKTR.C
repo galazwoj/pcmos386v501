@@ -19,17 +19,14 @@ mjs 04/01/92	created this module
 =======================================================================
 */
 
+#include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <dos.h>
-#include <dir.h>
 #include <string.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 
-typedef struct ffblk DTA;
+typedef struct find_t DTA;
 
 #define DTABYTES sizeof(DTA)
 
@@ -163,10 +160,10 @@ word ul_walk_tree(byte *dpbuf, byte *fspec, word (*work_func)(byte *, byte *, by
   first = 1;
   while(1)  {
     if(first)  {
-      err_stat = findfirst(dpbuf,&ffblk,0x10);
+      err_stat = _dos_findfirst(dpbuf,0x10,&ffblk);
       first = 0;
       }     else  {
-      err_stat = findnext(&ffblk);
+      err_stat = _dos_findnext(&ffblk);
       }
     if(err_stat != 0)  {
       if(_doserrno == 0x12)  {
@@ -184,15 +181,15 @@ word ul_walk_tree(byte *dpbuf, byte *fspec, word (*work_func)(byte *, byte *, by
     // when a directory entry is found (skipping . and ..) it's time
     // to nest deeper.
 
-    if(ffblk.ff_attrib & 0x10) {
-      if(ffblk.ff_name[0] == '.') {
+    if(ffblk.attrib & 0x10) {
+      if(ffblk.name[0] == '.') {
         continue;
         }
 
       // add the found name onto the drive/path string, taking advantage
       // of the backslash that add_stars() will have put at trunc_ptr.
 
-      strcpy(trunc_ptr+1,ffblk.ff_name);
+      strcpy(trunc_ptr+1,ffblk.name);
       if(pushDT(&ffblk,trunc_ptr)) {
         return(1);
         }
@@ -204,7 +201,7 @@ word ul_walk_tree(byte *dpbuf, byte *fspec, word (*work_func)(byte *, byte *, by
 
       // for each file found, see if it passes the filter spec.
 
-      ul_form_template(ffblk.ff_name,norm2);
+      ul_form_template(ffblk.name,norm2);
       if(ul_qualify_template(norm1,norm2) == 0) {
         continue;
         }
@@ -213,7 +210,7 @@ word ul_walk_tree(byte *dpbuf, byte *fspec, word (*work_func)(byte *, byte *, by
       // name, and its attribute.
 
       *(trunc_ptr+1) = 0;
-      if((*(work_func))(dpbuf,ffblk.ff_name,ffblk.ff_attrib) != 0)  {
+      if((*(work_func))(dpbuf,ffblk.name,ffblk.attrib) != 0)  {
         return(1);
         }
       }

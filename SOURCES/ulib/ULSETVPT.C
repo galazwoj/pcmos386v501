@@ -24,8 +24,6 @@ mjs 04/01/92	created this module
 #include <string.h>
 #include <conio.h>
 #include <ctype.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 dword ul_vidptr;			// video memory pointer

@@ -21,10 +21,7 @@ mjs 04/01/92	created this module
 
 #include <stdlib.h>
 #include <dos.h>
-#include <dir.h>
 #include <io.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================
@@ -43,10 +40,10 @@ mjs 04/01/92	created this module
 byte ul_any_files(byte *filespec, byte search_attr) {
 
   word err_stat;			// holds error status
-  struct ffblk ffblk;			// for findfirst/next
+  struct find_t ffblk;			// for findfirst/next
 
 
-  err_stat = findfirst(filespec,&ffblk,search_attr);
+  err_stat = _dos_findfirst(filespec,search_attr,&ffblk);
   if(err_stat != 0) {
     if(_doserrno == 0x12) {
       return(1);

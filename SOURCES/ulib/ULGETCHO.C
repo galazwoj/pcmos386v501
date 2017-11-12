@@ -22,8 +22,6 @@ mjs 04/01/92	created this module
 #include <stdlib.h>
 #include <dos.h>
 #include <ctype.h>
-
-#include <asmtypes.h>
 #include "ulib.h"
 
 /*======================================================================

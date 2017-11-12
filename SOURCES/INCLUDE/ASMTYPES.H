@@ -30,8 +30,8 @@ typedef union {
   unsigned long far *lptr;	/* ptr for a long */
   void far *vptr;		/* for ptr to ptr copies */
   long li;			/* double word numbers */
-  void far (*ffptrv)();		/* ptr to far function returning void */
-  word far (*ffptri)();		/* ptr to far function returning word */
+  void (far *ffptrv)();		/* ptr to far function returning void */
+  word (far *ffptri)();		/* ptr to far function returning word */
   } dword;
 
 #define SETDWORD(x,s,o) (x).h[a_seg]=s; (x).h[a_ofs]=o
@@ -42,4 +42,3 @@ typedef union {
 
 #define asmtypes 1
 
-
