@@ -249,7 +249,7 @@ scr_curs(8,35);
 scr_printf("Initialization string      ");
 i=0;			/* print them out */
 rwp=offset_speed;
-fseek(fp,rwp,0L);	/* read the speed table */
+fseek(fp,rwp,0);	/* read the speed table */
 j=fread(modem_speed_tab,2,10,fp);
 j=fread(mdmstrtab,50,10,fp);
 row=10;col=3;
@@ -354,9 +354,9 @@ while(SayBye=='N') {
 		scr_curs(24,0);
 		scr_eol();
 		if(c != ESC) {
-			fseek(fp,offset_speed,0L);
+			fseek(fp,offset_speed,0);
 			j=fwrite(modem_speed_tab,2,10,fp);
-			fseek(fp,offset_init_str+((row-10)*MODEM_STR_LEN),0L);
+			fseek(fp,offset_init_str+((row-10)*MODEM_STR_LEN),0);
 			j=fwrite(mdmstrtab[row-10],50,1,fp);
 			}
 		else
