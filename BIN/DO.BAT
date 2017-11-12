@@ -1,2 +1,0 @@
-msys a:
-copy . a:
