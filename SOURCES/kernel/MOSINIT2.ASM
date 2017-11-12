@@ -4091,7 +4091,7 @@ no286a:
 	mov	[tcbcdbpf],0		; clear pointer to cdb
 	mov	[tcbcdbpc],0		; clear pointer to cdb
 	mov	[tcbndriv],0		; clear # of drives
-	mov	[scbdrivs],0		; clear any count of drives for re-init
+	mov	[scbdrivs],2		; clear any count of drives for re-init (always make room for A: and B: floppies)
 	mov	[scbbdbpf],0		; clear pointer to 1st block device
 	mov	[scbbdbpl],0		; clear pointer to last block device
 	mov	[scbgfbpf],0		; clear any active gfbs
