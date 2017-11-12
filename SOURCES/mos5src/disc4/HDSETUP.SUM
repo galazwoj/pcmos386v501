@@ -1,0 +1,6 @@
+; hard  pt  pt     pt    drive  boot               start end   false
+; drive num entry  type  letter status megs  cylds cyld  cyld  ebpb
+; ===== === ===== ====== ====== ====== ===== ===== ===== ===== =====
+    0   00    0   DLG-p    C      Y    00107 00218 00000 00217   N
+    0   01    0   DLG-e    D      x    00107 00218 00218 00435   N
+    0   02    0   DLG-e    E      x    00106 00217 00436 00652   N

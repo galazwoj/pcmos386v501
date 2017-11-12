@@ -1,0 +1,391 @@
+======================================================================
+
+                   PC-MOS 5.01 Booster Version 2.00
+
+PC-MOS 5.01 Booster Version 2.00 supplies significant enhancements
+over previously available versions of PC-MOS.  The PC-MOS 5.01
+Booster also includes all maintenance updates to the original version
+of PC-MOS 5.01.  These enhancements and updates are detailed below.
+
+The PC-MOS 5.01 Booster Version 2.00 can be used with any update level
+of PC-MOS Version 5.01.
+
+======================================================================
+
+                          Table of Contents
+
+A. Quick Start
+
+B. Installing with no Memory Management
+
+C. Installing to a PC-MOS Floppy Boot Disk
+
+D. Enhanced disk performance
+   Typically 40-50% faster copying large files
+
+E. $$MOSCFG.SYS
+   CONFIG.SYS configuration control enhancement
+
+E. Other enhancements and updates since Booster Version 1.00
+
+F. Booster Version 1.00 enhancements
+   1.  $$SHELL.SYS/COMMAND.COM/ADDTASK.COM
+       Create larger tasks to run larger programs
+   2.  $MEMSEL.SYS
+       One boot disk serves memory-managed 286 and 386 systems
+   3.  SMPDUMP.EXE
+       Tune your SMPSIZE to free more memory
+   4.  Other enhancements and updates since Update #6
+
+G. Update #6 enhancements and updates
+
+======================================================================
+
+                             Quick Start
+
+ 1.  If your PC-MOS configuration does not include memory management,
+     or you want to install the PC-MOS 5.01 Booster to a PC-MOS
+     floppy boot disk, see the relevant installation instructions
+     below.
+
+ 2.  Only task 0 may be active when installing PC-MOS 5.01 Booster.
+     If necessary, after exiting any active applications in each
+     task, enter REMTASK ALL from the task 0 PC-MOS command prompt.
+
+ 3.  Since critical PC-MOS boot files will be changed, the INSTALL
+     program requires that disk caching be turned off in case the
+     PC-MOS 5.01 Booster installation process is interrupted before
+     completion.  Enter MOSADM CACHE OFF at the PC-MOS command prompt
+     to turn disk caching off.  Note that disk caching will need to
+     be turned off even if you have no CACHE= line in your
+     CONFIG.SYS.
+
+ 4.  Since critical PC-MOS boot files will be changed, we recommended
+     that you have a PC-MOS floppy boot disk available in case the
+     PC-MOS 5.01 Booster installation process is interrupted before
+     completion.  This is also a very good time to make sure that you
+     have a current backup of the drive onto which you are installing
+     PC-MOS 5.01 booster.
+
+ 5.  The PC-MOS 5.01 Booster is installed from any drive by
+     running the INSTALL.EXE program supplied on the PC-MOS 5.01
+     Booster diskette.  For example, if you inserted the PC-MOS 5.01
+     Booster diskette into drive B:, you would enter B:INSTALL at the
+     PC-MOS command prompt.
+
+ 6.  If, for any reason, you need to recover your original PC-MOS
+     configuration, you can uninstall PC-MOS 5.01 Booster using the
+     same INSTALL program by selecting Uninstall from the INSTALL
+     main menu.
+
+======================================================================
+
+                 Installing with no Memory Management
+
+The INSTALL program requires about 450K free memory.  If you
+temporarily change your CONFIG.SYS file so your SMPSIZE is 15K, then
+reboot, you should have enough free memory to install PC-MOS 5.01
+Booster.  This is a large enough SMP to load UPDAT501.SYS, but is
+probably not large enough for any other device drivers.  After
+installing PC-MOS 5.01 Booster, you can restore your original
+CONFIG.SYS file.
+
+If your original CONFIG.SYS file did not load UPDAT501.SYS, be sure
+to add a DEVICE= line to your restored CONFIG.SYS so that
+UPDAT501.SYS is loaded.  The installation will have added the correct
+DEVICE= line as the last line in your temporary CONFIG.SYS file.  For
+example, if you installed PC-MOS 5.01 Booster into C:\PCMOS, you
+would include a DEVICE=C:\PCMOS\UPDAT501.SYS line in your restored
+CONFIG.SYS, exactly like the last line in your temporary CONFIG.SYS
+file.
+
+======================================================================
+
+               Installing to a PC-MOS Floppy Boot Disk
+
+After booting from the PC-MOS floppy boot disk, insert your PC-MOS
+5.01 Booster diskette into any different drive.  You can then install
+PC-MOS 5.01 Booster onto your PC-MOS floppy boot disk by running the
+INSTALL.EXE program supplied on the PC-MOS 5.01 Booster diskette. For
+example, if you booted from a PC-MOS floppy boot disk in drive A:
+and inserted your PC-MOS 5.01 Booster diskette into drive B:, you
+would enter B:INSTALL at the PC-MOS command prompt.
+
+======================================================================
+
+                      Enhanced disk performance
+             Typically 40-50% faster copying large files
+
+PC-MOS had previously taken an unnecessarily conservative approach to
+a number of file-I/O issues.  Each time a file was extended, the new
+allocation information was previously physically written to the file
+allocation table, instead of now being physically written when the
+file was closed or committed.  This change is implemented in
+UPDAT501.SYS patch 139.
+
+PC-MOS would previously divide up hard disk i/o so that a disk
+read/write would not cross a track boundary and so that a disk
+read/write would not cross a DMA boundary (a memory address evenly
+divisible by 64K).  This change is compatible with all but older hard
+disk BIOS's.  This change is implemented in UPDAT501.SYS patch 140. 
+In the event that this change is incompatible with a particular hard
+disk BIOS, it should be disabled in CONFIG.SYS as:
+
+DEVICE=UPDAT501.SYS /140
+
+While the above changes are less conservative than the previous
+PC-MOS behavior, they are consistent with the behavior of the most
+recent versions of DOS.
+
+$$SHELL.OLD and COMMAND.NEW were changed to improve the performance
+of the COPY command for files greater than 65535 bytes long.
+
+Under certain circumstances, PC-MOS would write data to the disk two
+times.  As the same data would be written to the same location, there
+was no data corruption.  The duplicated write was, of course, slower
+than only writing the data once.
+
+======================================================================
+
+                            $$MOSCFG.SYS
+             CONFIG.SYS configuration control enhancement
+
+See MOSCFG.DOC for a complete description.
+
+======================================================================
+
+      Other enhancements and updates since Booster Version 1.00
+
+1.  $SERIAL.SYS, ELTERM.SYS, PCTERM.SYS, VGNA.SYS, VNA.SYS,
+    HGTERM.SYS, ATTERM.SYS, SRTERM.SYS, W7TERM.SYS, TRTERM.SYS -
+    These files are updated to include changes currently included,
+    where applicable, in the EMULINK and LanLink Professional
+    products.
+
+2.  $KBFR.SYS - correction for Alt-. behavior in Quick Basic 2.0.
+
+3.  SERINFO.COM - corrected misspelling.
+
+4.  $$MOS.SYS patch 8 - correction for mishandling other display
+    pages before the first task is added and viewed at the console.
+
+5.  UPDAT501.SYS patch 137 - correct ANSI emulation to treat ESC [2J
+    as home/clear screen and to treat ESC [nJ for all other values
+    of n (or no n) as clear to end of screen.
+
+======================================================================
+
+                 $$SHELL.SYS/COMMAND.COM/ADDTASK.COM
+              Create larger tasks to run larger programs
+
+Two styles of $$SHELL.SYS and COMMAND.COM are provided with PC-MOS
+5.01 Booster.  The NEW style is installed when you install to a hard
+disk in a memory-managed PC-MOS configuration, otherwise the OLD
+style is installed.  Use the NEWCMD.BAT batch file to switch to the
+NEW style.  Use the OLDCMD.BAT batch file to switch to the OLD style.
+
+The OLD style, implemented by $$SHELL.OLD and COMMAND.OLD, is the
+same as the style of the $$SHELL.SYS and COMMAND.COM you've been
+using with PC-MOS.  $$SHELL.SYS implements the bulk of the command
+processor.  It is loaded into global memory where it is accessible to
+all tasks.  COMMAND.COM is a small stub serving primarily to reserve
+task memory for the task-specific data areas used for processing
+commands.  $$SHELL.OLD and COMMAND.OLD are installed in your PC-MOS
+system directory.  They were copied onto the active copies of
+$$SHELL.SYS and COMMAND.COM by the INSTALL program if needed.
+
+ADDTASK.COM has been changed so that a task which is only large
+enough to hold COMMAND.COM can be created.  ADDTASK 0 will report the
+minimum task size according to your configuration.  In a
+memory-managed configuration, with the OLD style, this minimum task
+size is 7K.  Note that the minimum task size will not allow you to
+run any programs, you will only be able to use internal command
+processor commands like DIR.
+
+The NEW style is implemented by $$SHELL.NEW and COMMAND.NEW which
+were installed in your PC-MOS system directory.  These are copied
+onto the active copies of $$SHELL.SYS and COMMAND.COM by the INSTALL
+program.  $$SHELL.NEW is a tiny stub program consuming only 16 bytes
+of global memory as $$SHELL.SYS.  All the remaining PC-MOS command
+processor functionality is in COMMAND.NEW, which is loaded into each
+task as COMMAND.COM.
+
+The NEW command processor loads most of itself into upper task
+memory, leaving a small, resident stub in low task memory.  When you
+run a program, the command processor unloads all but the resident
+stub, freeing most of its memory for the use of the program you are
+running.  When the program terminates, the resident stub reloads the
+remainder of the command processor, but only if the program actually
+used the freed upper task memory.
+
+The advantage of the NEW style occurs primarily in two configurations
+-- in a memory-managed configuration and in a non-memory-managed,
+single-task configuration.
+
+With the NEW style, in a single-task configuration, the maximum task
+size is 33K larger than with the OLD style.  In itself, this doesn't
+represent a memory savings, we've just moved the command processor
+from global memory to task memory.  The savings occurs when you run a
+program.  In the NEW configuration, much of the command processor's
+memory becomes available to the program you've run.  In the OLD
+configuration, the memory was always used by the command processor.
+You will find that your program has 30K more memory available to it
+in this non-memory-managed, single-task configuration.
+
+In a memory-managed configuration, the stub $$SHELL.SYS will allow
+33K of global memory to be used for some other purpose, with very
+little cost in the amount of memory available to application
+programs.  This could permit a larger SMP or larger CACHE but, more
+likely, it allows more of your existing configuration to fit in upper
+memory.  If 33K more of your existing configuration fits in upper
+memory, 33K more memory is available for larger task sizes.  In that
+case, as in the single-task configuration described in the preceding
+paragraph, 30K more memory is available to your application programs.
+
+The NEW style has disadvantages in two configurations -- in a
+non-memory-managed, multitasking configuration and in any
+configuration where the reloading of the command processor from disk
+is a problem.  Reloading the command processor from disk is probably
+only a disadvantage in non-memory-managed, floppy boot
+configurations.  In a memory-managed configuration, you could use
+$RAMDISK.SYS to create a ram disk to hold COMMAND.COM and use SET
+COMSPEC=d:\COMMAND.COM (where d: is the ram disk drive) so the
+command processor is reloaded from the ram disk.
+
+In a non-memory-managed, multitasking configuration, the OLD style
+should be used.  
+
+======================================================================
+
+                             $MEMSEL.SYS
+       One boot disk serves memory-managed 286 and 386 systems
+
+$MEMSEL.SYS allows boot-time selection of a MEMDEV driver according
+to whether the boot CPU is a 286 or is a 386 or better.  This allows
+a single boot disk (or boot configuration) to be used for both
+environments.  The $MEMSEL.SYS command line is:
+
+MEMDEV = $MEMSEL.SYS [/286=d:\path\286driver] [/386=d:\path\386driver]
+
+/286=$GIZMO.SYS /386=$386.SYS are the defaults when /286= or /386=
+are not specified.
+
+======================================================================
+
+                             SMPDUMP.EXE
+                Tune your SMPSIZE to free more memory
+
+SMPDUMP.EXE dumps all memory blocks in the SMP(s).  This information
+allows you to tune your SMP sizes to your exact, actual usage.  For
+the first time you can determine the precise cost in your
+configuration of adding a task or of running an application.  If this
+tuning allows you to reduce your SMP sizes so that all your kernel
+components are loaded in upper memory (as reported by MOS INFO), your
+maximum task size could be increased to 612K with $386.SYS (708K if
+your hardware and requirements permit the CONFIG.SYS command VTYPE=4F
+to be used).  A sample dump is:
+
+C:\>SMPDUMP
+SMPDUMP System Memory Pool Dump Utility Version 5.01 (940326)
+(C) Copyright 1994 The Software Link, Incorporated All
+rights reserved worldwide
+
+Segment  Length  Type
+   CC00     400  used
+   CC19     528  used
+   CC3A      96  Block Device Block for drive A:
+   CC40      96  Current Directory Block for drive A: for task 0
+   CC46      96  Block Device Block for drive B:
+   CC4C      96  Current Directory Block for drive B: for task 0
+   CC52     128  used
+   CC5A      96  Block Device Block for drive C:
+   CC60      96  Current Directory Block for drive C: for task 0
+   CC66      96  Global File Block for file AUX
+   CC6C      48  Task File Block for file AUX for task 0 for PSP 0000
+   CC6F      96  Global File Block for file CON
+   CC75      48  Task File Block for file CON for task 0 for PSP 0000
+   CC78      96  Global File Block for file PRN
+   CC7E      48  Task File Block for file PRN for task 0 for PSP 0000
+   CC81      96  Current Directory Block for drive A: for task 0
+   CC87      96  Current Directory Block for drive B: for task 0
+   CC8D    2880  Character device driver _501_134
+   CD41    1280  used
+   CD91      96  Current Directory Block for drive C: for task 0
+   CD97     208  used
+   CDA4    3728  Task Control Block for task 1
+   CE8D      96  Current Directory Block for drive A: for task 1
+   CE93      96  Current Directory Block for drive B: for task 1
+   CE99      96  Current Directory Block for drive C: for task 1
+   CE9F     208  used
+   CEAC      48  Task File Block for file CONFIG.SYS for task 1 for PSP 08D5
+   CEAF      48  Task File Block for file AUX for task 1 for PSP 0000
+   CEB2      48  Task File Block for file CON for task 1 for PSP 0000
+   CEB5      48  Task File Block for file PRN for task 1 for PSP 0000
+   CEB8      96  Global File Block for file CONFIG.SYS
+   CEBE      32  Record Lock Block for file CONFIG.SYS for task 1 for PSP 08D5
+   CEC0      96  Global File Block for file SMPDUMP.OUT
+   CEC6      48  Task File Block for file SMPDUMP.OUT for task 0 for PSP 0706
+   CEC9   90992  free
+
+======================================================================
+
+               Enhancements and updates since Update #6
+
+  1. $$SHELL.SYS allows rename file and rename directory commands of
+     the form:
+     
+     RENAME  d:\path\oldname  newname
+
+     even when d: is not the current drive.  The drive is not
+     specified for the new name, it is assumed to be the same as the
+     drive of the old name.
+
+     $$SHELL.SYS closes any open files it may have inherited (other
+     than the standard files) when it starts up, more closely
+     matching the behavior expected by some applications.
+
+  2. $PIPE.SYS now accepts a /B flag which allows binary data to be
+     sent without an appended end of file marker character (1AH).
+
+  3. $386.SYS now accepts a /W flag to limit memory testing to the
+     first 16 megabytes.  On some machines with Cyrix 386-replacement
+     486's the CPU addressing is limited to 16 megabytes even though
+     the CPU looks like a 486.
+
+     $386.SYS is more demanding in its tests to see if it can relocate
+     an extended BIOS data area, fixing a problem on Gateway 2000 with
+     a SCSI caching disk controller.
+
+  4. MOS.COM now allows MOS USEIRQ and FREEIRQ to specify IRQ's 8
+     through 15.  This requires that UPDAT501.SYS patch 130 be
+     active.
+
+     MOS MAP now displays $'s if present in program filenames.
+
+     MOS DOSVER allows up to 6.xx.  MOS DOSVER has been corrected so
+     that version x.x9 is not changed to version x.x0.
+
+     MOS SERINIT now allows specification of port numbers up to 32.
+
+  5. UNTERM.SYS now supports the more recent AMR cards.  UNTERM.SYS
+     requires that the enabled ROM video BIOS be compatible with all
+     co-resident AMR cards.  Thus a co-resident VGA card is only
+     supported if the ROM BIOS on the VGA card is compatible with all
+     co-resident AMR cards' video chip set.  Mixed AMR cards are only
+     supported if the enabled video BIOS is compatible with the other
+     AMR cards' video chip set.
+
+  6. Patch 5 ensures that the CPU stack pointer is on a word boundary
+     at all times in the MOS kernel.  You may measure an improvement
+     of as much as 10% in performance for some activities.  This
+     patch is automatically applied during installation of PC-MOS
+     5.01 Booster.
+
+======================================================================
+
+                  Update #6 enhancements and updates
+
+See UPDATE6.DOC for a complete description.
+
+======================================================================
+
