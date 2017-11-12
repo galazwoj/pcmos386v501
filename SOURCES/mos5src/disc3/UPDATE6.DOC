@@ -1,0 +1,234 @@
+                  Update #6 enhancements and updates
+
+
+The following describes updates to PC-MOS 5.01 prior to Booster
+Version 1.00.  All enhancements and updates through and including
+Update #6 are described.
+
+
+  1. An updated Auto Configuration Utility ACU.EXE that has been
+     modified to make sure that the UPDAT501.SYS device driver
+     statement is included in your CONFIG.SYS file.
+
+  2. A new FORMAT.COM that will not run when booted under DOS 5.0. 
+     The master boot record could be overwritten if you used
+     FORMAT.COM to format a MOS secondary partition when running under
+     DOS 5.0.  FORMAT.COM will now only run when booted under PC-MOS.
+
+  3. A program called SFT.COM that must be run BEFORE you try to
+     install FOXPRO on your system.  SFT.COM is a TSR program that
+     allows FOXPRO's install program to "see" the setting it requires
+     for FILES= so that it will function properly.
+
+  4. Updated EmuLink terminal device drivers ELTERM.SYS and HGTERM.SYS
+     that contain a correction for printing at the terminal using the
+     MOS ROUTE LPTn TO TERM command.  When printing from an
+     application that caused the screen to scroll during the print,
+     extra characters would be sent to the printer.  Also, these
+     drivers make sure that caps lock, num lock, and scroll lock work
+     correctly at the terminal.  In order for this second correction
+     to work properly, the patch E31_P2.PAT must be manually applied
+     to EmuLink 3.1.
+
+  5. The patch E31_P2.PAT that must be manually applied to EmuLink 3.1
+     to ensure that caps lock, num lock, and scroll lock work
+     correctly at the EmuLink terminal.  Instructions on how to apply
+     the patch are in the patch file itself.  Use the TYPE command to
+     display the contents of the patch file on the screen.
+
+  6. An updated PC-type terminal device driver PCTERM.SYS that
+     contains a correction for printing at the terminal using the MOS
+     ROUTE LPTn TO TERM command.  When printing from an application
+     that caused the screen to scroll during the print, extra
+     characters would be sent to the printer.
+
+  7. An updated MOSADM.COM file that corrects a problem that caused an
+     error message to display when trying to write to the same COM
+     device from more than one task at a time.
+
+  8. An updated MOS System Monitor program (MONITOR.COM).  The new
+     program contains a correction for the displayed number of files
+     open.  Also, a new /U option is available when loading the
+     program for the first time during a session.  Entering MONITOR /U
+     will load the program and immediately display the main menu, as
+     opposed to having to press CTRL - SPACE to bring up the menu.
+
+  9. An updated MOS.COM file that contains a revised MOS ROUTE LPTn
+     command option.  Entering just MOS ROUTE at the system prompt,
+     with no operands, will display a list of any printer redirection
+     presently set and active on the system.
+
+ 10. A new $386.SYS memory management driver that was revised to
+     compensate for a known problem in some of the early IBM 386SLC
+     microprocessors used in some IBM PS/2 computers.
+
+ 11. A more efficient $SERIAL.SYS driver that improves communications
+     speed through standard serial ports.  Also, input and output FIFO
+     support for 16550A UARTs has been added.  This provides an
+     additional increase in serial transmission rates.  Two new
+     operands (IF= and OF=) have been added to the end of the
+     $SERIAL.SYS command statement to provide this support, as
+     follows:
+
+          DEVICE={d:\path\}$SERIAL.SYS  /AD=nnnn,IB=nnnnn,
+          OB=nnnnn,HS={N,D,X,P,R},IN=n,IF=nn,OF=nn/...
+
+     where:
+
+     IF=nn is the Input FIFO buffer size in bytes. Defaults to 0 -
+     disabled. (Can ONLY be used on serial ports using a 16550A UART.
+     For such ports, set to 14.)
+
+     OF=nn is the Output FIFO buffer size in bytes. Defaults to 0 -
+     disabled. (Can ONLY be used on serial ports using a 16550A UART.
+     For such ports, set to 16.)
+
+ 12. A new SERINFO utility program that can be used to see what
+     serial communication ports are in use on your system and what
+     optional parameters are set for each port.  To run the utility,
+     enter the following command at the system prompt:
+
+          SERINFO
+
+ 13. An updated EXPORT.EXE backup program that contains a new command
+     line operand and corrections for appending an export to an
+     existing EXPORT diskette set and for importing large export files
+     that span multiple diskettes.
+
+     New /f Operand:
+ 
+     A new /f operand is available that selects an alternate behavior
+     for the /s copy all subdirectories operand, as follows:
+
+          EXPORT C:\ A: /S
+
+     The above command will export all files in the root and all files
+     in all subdirectories.
+
+          EXPORT C:\STUFF A: /S
+
+     The above command will export all files within C:\STUFF
+     (presuming that STUFF is a directory rather than a file) and all
+     files in all child directories.
+
+          EXPORT C:\STUFF\M*.* A: /S
+
+     The above command will export all files within the C:\STUFF
+     directory that start with the letter "m".  It will also find
+     every subdirectory within C:\STUFF whose name starts with an "m"
+     and then export all files within those subdirectories and their
+     child directories.
+
+          EXPORT C:\STUFF\M*.* A: /S /F
+
+     The above command will export all files within the C:\STUFF
+     directory that start with the letter "m".  It will also find
+     every subdirectory within C:\STUFF and then export only those
+     files within those subdirectories and their child directories
+     that start with the letter "m".
+
+          NOTE:  The /f switch cannot be used without the /s switch.
+
+     /a APPEND Operand:
+
+     The EXPORT append operation has been corrected to properly
+     identify the last diskette of an existing backup set.  If an
+     attempt is made to start an append operation with a diskette
+     other than the last diskette of an existing backup set, an error
+     message will be displayed.  You will have to start the EXPORT
+     append operation over again with the correct diskette in the
+     drive.
+
+     The first diskette used in an append operation (the last diskette
+     of the current backup set) will not be cleared of existing data,
+     but appended to.  Any subsequent diskettes used will be cleared
+     of any existing data and overwritten with the new EXPORT data.
+
+     /d OPERAND, Specified Date:
+
+     The User's Guide says that the /d operand selects files for
+     export with dates that come after the specified date.  This is
+     not correct.  Files with dates that match or come after the
+     specified date will be selected for export.
+
+     EXPORT Files that Span Multiple Diskettes:
+
+     A problem has been corrected in which large exported files that
+     spanned more than one diskette could sometimes not be properly
+     restored with the IMPORT program.  This was found to be a problem
+     in the EXPORT program and is corrected in the EXPORT.EXE provided
+     with this update.
+
+ 14. A new UNTERM.SYS driver for Video Network Adapter Plus (VNA Plus)
+     and Video Graphic Network Adapter Plus (VGNA Plus) hardware that
+     fixes problems with printing through the parallel port on
+     workstation Interface Units and random workstation lock-ups.
+
+ 15. A revised $ARNET.SYS driver for the "SmartPort-8" and "SmartPort
+     Plus-16" intelligent multiple serial port boards by ARNET
+     Corporation.
+
+ 16. Patches that must be manually applied to LANLink 5X and LANLink
+     LapTop to provide compatibility with PC-MOS 5.01.  The patch
+     files are:
+
+          LL5M.PAT - This patch is REQUIRED for PC-MOS 5.01
+                     and LANLink 5X.  The patch is applied
+                     to LANSERVE.COM.
+
+          LL5MDEMO.PAT - This patch is REQUIRED for PC-MOS 5.01
+                     and LANLink 5X.  The patch is applied
+                     to LANSERVE.COM on the LANLink 5X DEMO Disk.
+
+          LL5XSAT.PAT - This patch is REQUIRED for PC-MOS 5.01
+                     and LANLink 5X.  The patch is applied to
+                     LANSAT.SYS.
+
+          LLLAP5M.PAT - This patch is REQUIRED for PC-MOS 5.01
+                     and LANLink LapTop.  The patch is applied
+                     to LANSERVE.COM.
+
+          LLLAPSAT.PAT -  This patch is REQUIRED for PC-MOS 5.01
+                     and LANLink LapTop.  The patch is applied
+                     to LANSAT.SYS.
+
+     The patch files themselves are ASCII text files that contain both
+     the patch and the instructions on how to apply the patch.  Use
+     the TYPE command to display the contents of the patch file on the
+     screen or the COPY command to send it to the printer.  Then
+     follow the instructions to apply the patch.
+
+ 17. PATCHES FOR PC-MOS:
+
+     These patches ARE AUTOMATICALLY APPLIED to PC-MOS by the INSTALL
+     program!
+
+     Patch 2: (Patch 1 is replaced by Patch 2)
+
+     This patch must be applied to the PC-MOS kernel to correct a
+     possible incorrect partition boot record entry.  This problem
+     primarily occurs if you have a secondary partition formatted
+     under PC-MOS 4.10 and then reformat it under PC-MOS 5.01.  This
+     will happen when using AutoInstall to upgrade an existing dual
+     boot system.  The incorrect partition boot record entry will
+     prevent the system from booting from the PC-MOS secondary boot
+     partition.  In some cases this may also happen when formatting a
+     new secondary partition made with PC-MOS 5.01 HDSETUP.  In that
+     case, you will get a "Boot Error" message when attempting to boot
+     from the PC-MOS secondary boot partition.
+
+     Patch 3:
+
+     This patch must be applied to the PC-MOS kernel to correct the
+     method that PC-MOS uses for terminating the System File Table. 
+     This is required for PC-MOS security to function correctly in a
+     local area network environment.
+
+     Patch 4:
+
+     This patch must be applied to the PC-MOS kernel to allow
+     installation of the Bernoulli 90 MB Pro Series removable
+     cartridge system.  Without this patch, the DOSOAD.SYS device
+     driver and DOSCFG.EXE configuration program that come with this
+     system will not load and run.
+

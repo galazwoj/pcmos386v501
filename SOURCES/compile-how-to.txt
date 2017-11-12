@@ -19,9 +19,9 @@ in sources\ulib
 in sources\mos5src
 * compile kernel - \bc45\bin\make -f kernel.mak  (this kernel is newer)
 * compile utils  - \bc45\bin\make -f makeutil.mak
-* compile others - \bc45\bin\make -f maketool.mak
+* compile others - \bc45\bin\make -f maketerm.mak
 
-in sources\eport
+in sources\export
 * compile export - \bc45\bin\make -f export.mak
 
 in sources\import

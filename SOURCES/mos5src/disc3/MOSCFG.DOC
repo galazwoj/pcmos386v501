@@ -1,0 +1,190 @@
+                             $$MOSCFG.SYS
+
+
+
+This document describes enhancements to the PC-MOS 5.01 Booster
+Version 2.00 CONFIG.SYS processing.  If the $$MOSCFG.SYS file is
+present in the root directory of the boot drive when PC-MOS boots,
+then the CONFIG.SYS processing is enhanced to include boot-time
+selection of CONFIG.SYS commands depending upon the hardware
+configuration.  CONFIG.SYS processing is also enhanced by adding an
+ECHO command to display messages for debugging and status as
+$$MOSCFG.SYS processes CONFIG.SYS.  If $$MOSCFG.SYS is not present in
+the root directory of the boot drive, then the CONFIG.SYS processing
+is not enhanced.
+
+
+
+The ECHO statement is:
+
+ECHO <string> [ ... <string> ]
+
+where <string> is a single-quoted or double-quoted string.  The
+single quote character can't occur in a single-quoted string and the
+double quote character can't occur in a double-quoted string. The
+ECHO statement displays <string> to the boot console.  One or many
+strings may be specified.
+
+
+
+The boot-time selection of CONFIG.SYS commands is implemented using
+IF statements.  An IF statement is:
+
+IF <condition>
+;...
+;CONFIG.SYS commands processed if IF <condition> is true.
+;...
+ELSEIF <condition>
+;...
+;CONFIG.SYS commands processed if IF <condition> is false and
+;ELSEIF <condition> is true.  Any number or no ELSEIF statements can
+;occur between the IF statement and the optional ELSE statement or
+;ENDIF statement.
+;...
+ELSE
+;...
+;CONFIG.SYS commands processed if last preceding ELSEIF <condition>
+;is false or, if no ELSEIF, if IF <condition> is false.  One or no
+;ELSE statements can occur between the last preceding ELSEIF
+;statement (or IF statement) and the ENDIF statement.
+;...
+ENDIF
+
+
+
+<condition>'s can be OR'ed, AND'ed and NOT'ed as:
+
+NOT <condition1> AND <condition2> OR <condition3> AND NOT <condition4>
+
+Operator precedence is OR (lowest), AND, NOT (highest) so the above
+is true if <condition1> is false and <condition2> is true, else it is
+true if <condition3 is true and <condition4> is false.  Parentheses
+can be used to alter the operator precedence if needed.
+
+Condition evaluation is short-circuited, that is, in a left-to-right
+evaluation of the condition expression according to the operator
+precedence above, a <condition> is not evaluated unless it must be. 
+Thus, in the above condition example: if <condition1> is TRUE,
+<condition2> is not evaluated; if <condition1> is FALSE and
+<condition2> is TRUE, then neither <condition3> nor <condition4> is
+evaluated, etc.  In the above expression all conditions are evaluated
+only if <condition1> is FALSE, <condition2> is TRUE and <condition3>
+is TRUE.
+
+
+
+<condition>'s include:
+
+CPU <comparison> <cpu value>
+VIDEO <comparison> <video value>
+MEMORY <comparison> <decimal megabytes base + extended memory>
+RAM <hex address>
+ROM <hex address>
+MATCH <hex address> <byte value(s)>
+ASK <prompt string> <optional default answer> <optional time-out>
+
+as described in the following.
+
+
+
+CPU <comparison> <cpu value>
+
+<comparison> can be <, >, <>, =, <= or >=.  <cpu value> can be 8086,
+80286, 80386, 80486 or PENTIUM.  The result of the condition is true
+if the result of comparing the system CPU to the <cpu value> is true
+according to the <cpu value> ordering above.  That is, CPU < 80286
+only if CPU = 8086 and CPU > 80486 only if CPU = PENTIUM.
+
+
+
+VIDEO <comparison> <video value>
+
+<comparison> can be <, >, <>, =, <= or >=.  <video value> can be MDA,
+HGC, CGA, MCGA, EGA or VGA.  The result of the condition is true if
+the result of comparing the system's active video adapter to the
+<video value> is true according to the <video value> ordering above. 
+That is VIDEO < CGA is true only if VIDEO = MDA OR VIDEO = HGC (VIDEO
+= HGC is true if a Hercules-compatible monochrome adapter is the
+active video adapter).  VIDEO > EGA is true only if VIDEO = VGA.
+
+
+
+MEMORY <comparison> <decimal megabytes base + extended memory>
+
+<comparison> can be <, >, <>, =, <= or >=.  <decimal megabytes base +
+extended memory> can be from 1 to 64.  For CPU >= 80286, the total
+memory is determined from the system setup CMOS.  For CPU = 8086, the
+condition is always true for <, <= and <>, otherwise the condition is
+false.
+
+
+
+ROM <hex address>
+
+<hex address> must be from C0000 to EFFFF.  The condition is true if
+ROM is detected at <hex address>.  ROM is detected by looking at each
+2K address from C0000 through EF800.  When an adapter ROM signature
+is detected, and the ROM length includes <hex address>, the condition
+is true.
+
+
+
+RAM <hex address>
+
+<hex address> can be from 00000 to FFFFF.  A read-write test is
+performed to see if RAM is present at the address - thus <hex
+address> ordinarily should not be a memory-mapped i/o address.  Note
+that it is possible for RAM <hex address> and ROM <hex address> to
+both be true for the same <hex address>.  This would occur if shadow
+ram were supplied by the system over the ROM and the shadow ram were
+not write-protected.
+
+
+
+MATCH <hex address> <byte value(s)>
+
+<hex address> can be from 00000 to FFFFF.  <byte value(s)> can be a
+list of <hex byte value>'s and <string>'s.  <hex byte value>'s and
+<string>'s can occur in the same list.  <hex byte value> can be from
+00 to FF.  <string> is a single-quoted string (which can't contain a
+single-quote) or is a double-quoted string (which can't contain a
+double-quote).  The condition is true if the <byte value(s)> match
+the contents of memory starting at the <hex address> memory location.
+It is an error for the <byte value(s)> to extend past memory location
+FFFFF.
+
+
+
+ASK <prompt string> <optional default answer> <optional time-out>
+
+<prompt string> is a single-quoted string (which can't contain a
+single-quote) or is a double-quoted string (which can't contain a
+double-quote).  <optional default answer> is Y or N. <optional
+time-out> is a decimal number from 1 to 3600 seconds.  The prompt
+string is displayed followed by " (Y/N)? [x]" where x is the
+<optional default answer> if present, otherwise x is a space.  The
+condition returns true if the user types Y in response to the
+prompt.  The condition returns false if the user types N or Esc in
+response to the prompt.  If the user presses Enter, the condition
+acts as though the user pressed <optional default answer> (if not
+specified, the condition does not return until the user presses Y or
+N or Esc).  If <optional time-out> is specified, then <optional
+default answer> is required and the condition acts as though the user
+pressed <optional default answer> after the number of seconds
+specified by <optional time-out>.  If the <optional time-out> is not
+specified, then the condition waits for the user to press an
+appropriate key.
+
+Note that the <condition> OR and AND short-circuiting especially
+applies to the ASK statement.  IF CPU >= 8086 OR ASK ... will never
+display the ASK prompt.
+
+
+
+Unrecognized <condition>'s:
+
+The entire IF statement is displayed with an error message and "Treat
+IF condition as true (Y/N)? [ ]" is displayed on the following line.
+The entire IF statement <condition> is regarded as true if the user
+types Y.  It is regarded as false if the user types N or Esc.
+
