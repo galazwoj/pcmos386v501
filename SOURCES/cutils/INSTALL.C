@@ -25,7 +25,6 @@ mjs 05/21/92	modified calls to ul_view() to match new version
 =======================================================================*/
 
 #include <ctype.h>
-#include <dir.h>
 #include <direct.h>
 #include <dos.h>
 #include <io.h>
@@ -36,11 +35,16 @@ mjs 05/21/92	modified calls to ul_view() to match new version
 #include <sys\types.h>
 #include <process.h>
 
-#include "asmtypes.h"
 #include "ulib.h"
 #include "insasm.h"
 #include "vidattr.h"
 #include "summary.h"
+
+#define MAXPATH   80
+#define MAXDRIVE  3
+#define MAXDIR    66
+#define MAXFILE   9
+#define MAXEXT    5
 
 #define	VIEWFILE_ERROR	0
 #define	F10_ERROR	1
@@ -81,7 +85,7 @@ mjs 05/21/92	modified calls to ul_view() to match new version
 #define ACU_FNAME	"acu.bat"
 #define PDRVR_FNAME	"a:\\updat501.sys"
 
-#define UPGRADE_ATTRS	(FA_RDONLY | FA_HIDDEN | FA_SYSTEM)
+#define UPGRADE_ATTRS	(_A_RDONLY | _A_HIDDEN | _A_SYSTEM)
 #define SUM_LINLEN	80
 
 #define DT_12		'0'
@@ -879,16 +883,16 @@ void dummymosfile(byte *dummy_str) {
 ;
 ;,fe
 ========================================================================*/
-void initmosfile(struct ffblk *mosarea) {
+void initmosfile(struct find_t *mosarea) {
 
 
-  mostime[moscount] = mosarea->ff_ftime;
-  mosdate[moscount] = mosarea->ff_fdate;
-  mossize[moscount] = mosarea->ff_fsize;
+  mostime[moscount] = mosarea->wr_time;
+  mosdate[moscount] = mosarea->wr_date;
+  mossize[moscount] = mosarea->size;
 
   //!!!! add error checking to strdup() call
 
-  mosfiles[moscount++] = strdup(mosarea->ff_name);
+  mosfiles[moscount++] = strdup(mosarea->name);
   }
 
 /*======================================================================
@@ -906,7 +910,7 @@ void initmosfile(struct ffblk *mosarea) {
 ========================================================================*/
 void initsearch(void) {
 
-  struct ffblk searcharea;
+  struct find_t searcharea;
 
 
   moscount = 0;
@@ -914,9 +918,9 @@ void initsearch(void) {
 
   // collect all files in current directory.
 
-  if(!findfirst("*.*",&searcharea,FA_NORMAL)) {
+  if(!_dos_findfirst("*.*",_A_NORMAL,&searcharea)) {
     initmosfile(&searcharea);
-    while((!findnext(&searcharea)) && (moscount < MAX_SEARCH)) {
+    while((!_dos_findnext(&searcharea)) && (moscount < MAX_SEARCH)) {
       initmosfile(&searcharea);
       }
     }
@@ -973,7 +977,7 @@ void endsearch(void) {
 ;
 ;,fe
 ========================================================================*/
-void checkupgrade(struct ffblk *searcharea, byte *path) {
+void checkupgrade(struct find_t *searcharea, byte *path) {
 
   word i;
   byte datsiz_diff;
@@ -981,14 +985,14 @@ void checkupgrade(struct ffblk *searcharea, byte *path) {
 
   for(i=0;i<moscount;i++) {
     datsiz_diff = 1;
-    if(mostime[i] == searcharea->ff_ftime) {
-      if(mosdate[i] == searcharea->ff_fdate) {
-        if(mossize[i] == searcharea->ff_fsize) {
+    if(mostime[i] == searcharea->wr_time) {
+      if(mosdate[i] == searcharea->wr_date) {
+        if(mossize[i] == searcharea->size) {
           datsiz_diff = 0;
           }
         }
       }
-    if(strcmp(mosfiles[i],searcharea->ff_name) == 0 && datsiz_diff) {
+    if(strcmp(mosfiles[i],searcharea->name) == 0 && datsiz_diff) {
       findindex[findcount] = i;
 
       //!!!! add error checking to strdup() call
@@ -1016,8 +1020,8 @@ void tracetree(byte *path) {
 
   byte dopath[65];
   byte workpath[65];
-  struct ffblk dirsearch;
-  struct ffblk filesearch;
+  struct find_t dirsearch;
+  struct find_t filesearch;
 
 
   strcpy(dopath,path);
@@ -1025,18 +1029,18 @@ void tracetree(byte *path) {
 
   // first thing is to recursively call all directories.
 
-  if(!findfirst(dopath,&dirsearch,FA_DIREC)) {
-    if((dirsearch.ff_name[0] != '.') && ((dirsearch.ff_attrib & FA_DIREC) == FA_DIREC)) {
+  if(!_dos_findfirst(dopath,_A_SUBDIR,&dirsearch)) {
+    if((dirsearch.name[0] != '.') && ((dirsearch.attrib & _A_SUBDIR) == _A_SUBDIR)) {
       strcpy(workpath,path);
       strcat(workpath,"\\");
-      strcat(workpath,dirsearch.ff_name);
+      strcat(workpath,dirsearch.name);
       tracetree(workpath);
       }
-    while(!findnext(&dirsearch)) {
-      if((dirsearch.ff_name[0] != '.') && ((dirsearch.ff_attrib & FA_DIREC) == FA_DIREC)) {
+    while(!_dos_findnext(&dirsearch)) {
+      if((dirsearch.name[0] != '.') && ((dirsearch.attrib & _A_SUBDIR) == _A_SUBDIR)) {
         strcpy(workpath,path);
         strcat(workpath,"\\");
-        strcat(workpath,dirsearch.ff_name);
+        strcat(workpath,dirsearch.name);
         tracetree(workpath);
         }
       }
@@ -1044,9 +1048,9 @@ void tracetree(byte *path) {
 
   // then check all files in the current directory.
 
-  if(!findfirst(dopath,&filesearch,FA_NORMAL)) {
+  if(!_dos_findfirst(dopath,_A_NORMAL,&filesearch)) {
     checkupgrade(&filesearch,path);
-    while(!findnext(&filesearch)) {
+    while(!_dos_findnext(&filesearch)) {
       checkupgrade(&filesearch,path);
       }
     }
@@ -1064,6 +1068,22 @@ void tracetree(byte *path) {
 ;
 ;,fe
 ========================================================================*/
+int getdisk(void)
+{
+    unsigned drive;
+
+    _dos_getdrive(&drive);
+    return ((int)drive - 1);
+}
+
+int setdisk(int drive)
+{
+    unsigned ndrives;
+
+    _dos_setdrive(drive+1,&ndrives);
+    return ((int)ndrives);
+}
+
 void searchfiles(void) {
 
   byte i;
@@ -1150,14 +1170,13 @@ word findmosfiles(void) {
 word checkspace(byte drv) {
 
   unsigned dx;
-  long x;
-  struct dfree dr;
-
+  unsigned long x;
+  struct diskfree_t dr;
 
   dx = (unsigned)(drv - 'A'+ 1);
-  getdfree(dx,&dr);
-  x = (long)dr.df_avail * (long)dr.df_sclus;
-  x *= (long)dr.df_bsec;
+  _dos_getdiskfree(dx,&dr);
+  x = (unsigned long)dr.avail_clusters * (unsigned long)dr.sectors_per_cluster;
+  x *= (unsigned long)dr.bytes_per_sector;
   x = x / 1024l;
   if(x > MIN_MOS_SPACE) {
     return(1);
@@ -1410,7 +1429,7 @@ byte process_mospath(void) {
   byte i;
 
 
-  fnsplit(mospath,drive_letter,path,fname,ext);
+  _splitpath(mospath,drive_letter,path,fname,ext);
   if(drive_letter[0] == 0) {
     drive_letter[0] = boot_drive;
     drive_letter[1] = ':';
@@ -1453,7 +1472,7 @@ byte process_mospath(void) {
   // form the final path string, removing the ending backslash
   // that fnmerge will put on.
 
-  fnmerge(mospath,drive_letter,path,fname,ext);
+  _makepath(mospath,drive_letter,path,fname,ext);
   i = strlen(mospath);
   if(i > 3) {
     mospath[i-1] = 0;
@@ -1678,7 +1697,7 @@ byte copy_files(byte makebat, byte chkdup) {
 
     // create acu.bat
 
-    fnsplit(mospath,drive_letter,path,fname,ext);
+    _splitpath(mospath,drive_letter,path,fname,ext);
     fp = er_fopen(ACU_FNAME, "w");
     fprintf(fp,"BATECHO OFF\n");
     fprintf(fp,"echo Loading Auto Configuration Utility. Please wait...\n");
@@ -2215,7 +2234,7 @@ int main(int argc, char *argv[]) {
 
   word i;
   byte *env_ptr;
-  struct REGPACK reg;
+  union REGS regs;
   word mos_ver;
   byte retcode;
 
@@ -2278,16 +2297,16 @@ int main(int argc, char *argv[]) {
 
   // check for mos
 
-  reg.r_ax = 0x3000;
-  reg.r_bx = 0x3000;
-  reg.r_cx = 0x3000;
-  reg.r_dx = 0x3000;
-  intr(0x21,&reg);
-  mos_ver = reg.r_ax;
-  reg.r_ax = 0x3000;
-  reg.r_bx = 0;
-  intr(0x21,&reg);
-  if(reg.r_ax == mos_ver) {
+  regs.x.ax = 0x3000;
+  regs.x.bx = 0x3000;
+  regs.x.cx = 0x3000;
+  regs.x.dx = 0x3000;
+  intdos(&regs,&regs);
+  mos_ver = regs.x.ax;
+  regs.x.ax = 0x3000;
+  regs.x.bx = 0;
+  intdos(&regs,&regs);
+  if(regs.x.ax == mos_ver) {
     ul_cls(7);
     ul_disp_msg(0,0,7,"ONDOS",0);
     exit(1);
@@ -2423,4 +2442,17 @@ else {
   }
 
 */
+
+#include <errno.h>
+
+int _chmod(char *pathname, int func, int attrib )
+{
+	if (func == 0)	
+		return _dos_getfileattr(pathname, &attrib);
+	if (func == 1)
+		return _dos_setfileattr(pathname, attrib);
+	errno = EACCES;
+	return -1;
+}	
+
 

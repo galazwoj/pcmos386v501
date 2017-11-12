@@ -4,8 +4,34 @@ Install required tools
 * Install Microsoft C 5.1 into \msc51
 * Install MASM %.1 into \masm51
 * copy \pcmos386v5501\bin\link.exe both to \masm51\bin and \msc51\bin.
-* place Borland make into bc\bin
-* delete all files from \pcmos386v5501\bin\ leaving only public.com and ts.com
+* place Borland make into \bc45\bin
+* place Borland tlib into \bc45\bin
+* delete all files from \pcmos386v5501\bin\ leaving only public.com, ts.com, pkzip.exe, zip2exe.exe
 
-Set up env variables - run vars.bat from \pcmos386v5501\sources\src\
-Compile kernel - \bc\bin\make -f kernel.mak
+Set up env variables - run vars.bat from \pcmos386v5501\sources
+
+in sources\kernel
+* compile kernel - \bc45\bin\make -f kernel.mak
+
+in sources\ulib
+* compile library- \bc45\bin\make -f ulib.mak
+
+in sources\mos5src
+* compile kernel - \bc45\bin\make -f kernel.mak  (this kernel is newer)
+* compile utils  - \bc45\bin\make -f makeutil.mak
+* compile others - \bc45\bin\make -f maketool.mak
+
+in sources\eport
+* compile export - \bc45\bin\make -f export.mak
+
+in sources\import
+* compile import - \bc45\bin\make -f import.mak
+
+in sources\cutils
+* compile hdsetup - \bc45\bin\make -f hdsetup.mak
+* compile install - \bc45\bin\make -f install.mak
+
+
+
+
+

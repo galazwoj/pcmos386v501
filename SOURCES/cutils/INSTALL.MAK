@@ -10,30 +10,25 @@
 # mjs 04/01/92	dlg mods: created this module.
 # 
 #======================================================================
-# required switches:
-#
-# -Dudir=d:\ulib\    (substitute your ulib directory for 'd:\ulib\')
-# -Dbdir=c:\bc\lib\  (substitute your borland lib directory for 'c:\bc\lib\')
-#
-# optional switches:
-#
-# -Ddebug	(to produce a version of hdsetup.exe with debugging info)
 #
 
-!if $(debug)
-bcc_dbg_option=-v
-tl_dbg_option=/v
-!endif
+.c.obj:
+        cl -c $<
 
-install.exe : install.obj insasm.obj
-  tlink $(tl_dbg_option) $(bdir)c0s install insasm,install,,$(bdir)cs $(udir)ulib
+.asm.obj:
+        masm -Mx $*;
 
-install.obj : install.c insasm.h vidattr.h asmtypes.h \
-	      dskstruc.h  ulib.h summary.h
-  bcc -c $(bcc_dbg_option) $*.c
+all:	install.exe
 
-insasm.obj : insasm.asm 
-  masm insasm;
+OBJECTS =       install.obj insasm.obj
+OBJLIST =       install +insasm
+LIBRARIES = ..\libs\ULIB.LIB
 
+install.exe : $(OBJECTS) $(LIBRARIES)
+        link $(OBJLIST)/e,,, ulib
 
-
+install.obj : install.c insasm.h vidattr.h ..\include\asmtypes.h \
+	      dskstruc.h  ..\include\ulib.h summary.h
+
+clean:
+	-del *.obj *.pub *.exe *.map

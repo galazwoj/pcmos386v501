@@ -35,16 +35,14 @@ mjs 05/21/92	modified calls to ul_view() to match new version
 */
 
 #include <stdio.h>
-#include <mem.h>
 #include <dos.h>
 #include <conio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <process.h>
 
-#include "asmtypes.h"
-#include "dskstruc.h"
 #include "ulib.h"
+#include "dskstruc.h"
 #include "vidattr.h"
 #include "summary.h"
 
@@ -920,7 +918,8 @@ byte read_sector(byte drv, byte head, byte sect, byte cyld, byte *bufofs) {
     regs.h.dl = drv;
     regs.h.dh = head;
     regs.x.bx = (word)bufofs;
-    sregs.es = _DS;
+    segread(&sregs);
+    sregs.es = sregs.ds;
     int86x(0x13,&regs,&regs,&sregs);
     if(!regs.x.cflag) {
       return(0);
@@ -964,7 +963,8 @@ byte write_sector(byte drv, byte head, byte sect, byte cyld, byte *bufofs) {
     regs.h.dl = drv;
     regs.h.dh = head;
     regs.x.bx = (word)bufofs;
-    sregs.es = _DS;
+    segread(&sregs);
+    sregs.es = sregs.ds;
     int86x(0x13,&regs,&regs,&sregs);
     if(!regs.x.cflag) {
       return(0);
@@ -1228,7 +1228,7 @@ byte build_tree(void) {
     regs.h.ah = 8;
     regs.h.dl = 0x80;			/* first hard drive */
     int86x(0x13,&regs,&regs,&sregs);
-    if((regs.x.flags & 1) == 0)	/* if carry not set */ {
+    if((regs.x.cflag & 1) == 0)	/* if carry not set */ {
       hard_drives = regs.h.dl;
       if(hard_drives > 2)		/* not setup for > 2 */ {
         hard_drives = 2;
@@ -1251,9 +1251,10 @@ byte build_tree(void) {
     regs.h.bl = 3;			/* 3 for first hard disk */
     regs.x.cx = 0x0860;
     regs.x.dx = (word)&device_parms;
-    sregs.ds = _DS;
+    segread(&sregs);
+    sregs.ds = sregs.ds;
     int86x(0x21,&regs,&regs,&sregs);
-    if((regs.x.flags & 1) == 0)	/* if carry not set */ {
+    if((regs.x.cflag & 1) == 0)	/* if carry not set */ {
       hard_drives = 1;
       temp_cylds = device_parms.dpCylinders;
       temp_heads = device_parms.dpHeads;
@@ -1296,7 +1297,7 @@ byte build_tree(void) {
     regs.h.dl = 0x81;			/* second hard drive */
     int86x(0x13,&regs,&regs,&sregs);
 
-    if(regs.x.flags & 1) {
+    if(regs.x.cflag & 1) {
       report_error(errcode_diskread);
       return(1);
       }
@@ -3032,7 +3033,8 @@ void reboot(void) {
 
   regs.x.ax = 0x3d02;
   regs.x.dx = (word)mmname;
-  sregs.ds = _SS;
+  segread(&sregs);
+  sregs.ds = sregs.ss;
   intdosx(&regs,&regs,&sregs);
   if(regs.x.cflag == 0) {
     regs.x.bx = regs.x.ax;
@@ -3054,7 +3056,7 @@ void reboot(void) {
     memptr.h[a_seg] = 0xf000;
     memptr.h[a_ofs] = 0xfff0;
     }
-  _AH = 0;
+  regs.h.ah = 0;
   (memptr.ffptrv)();
   }
 
