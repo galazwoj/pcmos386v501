@@ -31,11 +31,11 @@
 
 .c.obj:
     cl -c -I. -I..\include $&.c
-    \bc45\bin\tlib ulib -+$&.obj
+    lib ulib -+$&.obj;
 
 .asm.obj:
     masm /mx /z $&;
-    \bc45\bin\tlib ulib -+$&.obj
+    lib ulib -+$&.obj;
 
 #==== the main target
 
