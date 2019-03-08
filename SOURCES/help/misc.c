@@ -66,8 +66,12 @@ static void delay( unsigned milliseconds)
     	stop = (prev = readtimer()) + (milliseconds * multiplier);
     	while ((cur = readtimer()) < stop)
         {
-        	if (cur < prev && (stop >= 0x10000L))     /* Check for timer wraparound */
+        	if (cur < prev )     /* Check for timer wraparound */
+		{
+	     		if (stop < 0x10000L)
+                		break;
             		stop -= 0x10000L;
+		}
         	prev = cur;
         }
 }
