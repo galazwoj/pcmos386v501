@@ -120,7 +120,7 @@
         del $*.pub
         del $*.obj
 
-ALL:    f_com f_exe f_sys	
+ALL:    f_com f_exe f_sys help.ndx	
 
 f_com :	  adddev.com   addtask.com     alias.com     class.com    debug.com \
           dirmap.com  diskcopy.com    diskid.com  filemode.com   format.com \
@@ -130,7 +130,7 @@ f_com :	  adddev.com   addtask.com     alias.com     class.com    debug.com \
         setmouse.com     spool.com  vidpatch.com    filter.com  patchid.com \
    	    init.com   command.com	 sft.com
 
-f_exe:    verify.exe  compfile.exe   helpgen.exe	ed.exe  #  modem.exe
+f_exe:    verify.exe  compfile.exe   helpgen.exe	ed.exe     help.exe     #  modem.exe
 
 f_sys:	 mosdd7f.sys     _286n.sys      _386.sys      _all.sys  _charge.sys \
             _ems.sys    _gizmo.sys     _kbbe.sys     _kbcf.sys    _kbdk.sys \
@@ -487,8 +487,19 @@ helpgen.exe: helpgen.c
         cl -c helpgen.c
         link helpgen/e,,,rsasmall;
 
-help.exe: help.pas help.inc
-        tpc help
+help.ndx:	helpgen.exe
+	helpgen
+
+help.exe: help.c helpmisc.c sound.asm scroll.asm
+	cl -c help.c
+	cl -c helpmisc.c
+	masm sound.asm;
+	masm scroll.asm;
+	link scroll + sound + helpmisc + help, help,, graphics.lib
+
+#	this is now obsolete
+#help.exe   help.pas help.inc
+#        tpc help
 
 ed.exe:	ed.c
         cl -c ed.c
@@ -499,4 +510,4 @@ ed.exe:	ed.c
 #        link modem,,,;
 
 clean:
-	-del *.obj *.sys *.pub *.com *.exe *.map
+	-del *.obj *.sys *.pub *.com *.exe *.map help.txt help.ndx

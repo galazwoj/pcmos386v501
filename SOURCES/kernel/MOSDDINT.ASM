@@ -581,7 +581,15 @@ ddinit0 proc near
 	pop	es
 	pop	bx
 	mov	es:[bx+10],dl		; number of drives actually installed
+	cmp	[scbdevs],0		; see if assigning floppies
+	jne	ddi02
+	mov	[scbflops],dl		; save number of floppies installed
+	mov	dl,scbhddboot		; reserve drives up to boot HDD
+ddi02:
+	inc	[scbdevs]
 	add	[scbdrivs],dl		; increasing total number of drives in system
+	jnz	ddi0b
+	add	[scbdrivs],2		; if no floppy installed, reserve A and B
 	jmp	ddi0b
 ddi0a:
 	call	moscdint		; character device (look for standard devices)
@@ -871,8 +879,8 @@ mosbd1b:
 mosbd2:
 	pop	es			; address of bdb
 	push	ax			; save error code
-	mov	al,1
-	mov	al,'B'
+	mov	ah,1			; remove memory block
+	mov	al,'B'			; remove BDB entry
 	call	mosliman		; call mosliman
 	pop	ax
 mosbd3:

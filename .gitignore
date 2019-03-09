@@ -31,7 +31,7 @@
 *.err
 *.map
 *.log
-boot.img
+*.img
 *.ndx
 *.lst
 *.16

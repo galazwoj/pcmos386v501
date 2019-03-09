@@ -2,7 +2,7 @@
 	title	MOSDDINT.ASM - device driver initialization
 
 	subttl	MOSDDINT Development Specification
-
+#error FILE HORRIBLY BROKEN !!!
 extrn	bugerror:near	;enable debug stack error reporting
 ;-----------------------------------------------------------------------;
 ;		      Development Specification 			;
@@ -692,10 +692,10 @@ block device driver
 	jmp	mosbd1
 mosbd1b:
 	xor	al,al
-		pop	es		; address of bdb
+	pop	es		; address of bdb
 	push	ax		; save error code
-	mov	al,1
-	mov	al,'B'
+	mov	ah,1		; remove memory block  
+	mov	al,'B'          ; remove BDB enry      
 	call	mosliman	; call MOSLIMAN
 an		; call moslima	MGetSCB ds
 	assume	ds:grp

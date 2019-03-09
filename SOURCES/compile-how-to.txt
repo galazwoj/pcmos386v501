@@ -2,7 +2,7 @@ Compile how-to
 
 Install required tools
 * Install Microsoft C 5.1 into \msc51
-* Install MASM %.1 into \masm51
+* Install MASM 5.1 into \masm51
 * copy \pcmos386v5501\bin\link.exe both to \masm51\bin and \msc51\bin.
 * place Borland make into \bc45\bin
 * place Borland tlib into \bc45\bin
