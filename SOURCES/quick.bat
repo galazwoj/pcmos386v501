@@ -3,6 +3,10 @@ cd mos5src
 \bc45\bin\make -f makeutil.mak
 \bc45\bin\make -f maketerm.mak
 cd ..
+
+cd ulib
+\bc45\bin\make -f ulib.mak
+cd ..
                          
 cd export
 \bc45\bin\make -f export.mak
@@ -15,6 +19,10 @@ cd ..
 cd cutils
 \bc45\bin\make -f hdsetup.mak
 \bc45\bin\make -f install.mak
+cd ..
+
+cd acu
+\bc45\bin\make 
 cd ..
 
 cd mos5src

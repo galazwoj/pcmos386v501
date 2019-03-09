@@ -37,15 +37,26 @@ OBJLIST = acu +sysgen +globals +init +cpu_type +read_exi +ed_mos \
 
 ALL:    acu.exe  acu.mnu  acu-help.hlp
 
-acu.exe : $(OBJECTS) ${LIB}\rsalarge.lib
-        link $(OBJLIST)/m/e,,,rsalarge
+clean:
+	-del *.obj
+	-del *.map
+	-del acu.exe  acu.mnu  acu-help.hlp
+
+acu.exe : $(OBJECTS) 
+        link /m/e @acu.lnk
+#        link $(OBJLIST)/m/e,,,rsalarge
 
 acu.mnu : m1.mmk m160.mmk
-        if exist acu.mnu del acu.mnu
-        menmak acu m1 m160 /c
+#        if exist acu.mnu del acu.mnu
+#        menmak acu m1 m160 /c
+	@echo 'Cannot create acu.mmu now, using one from original discs'
+	copy ..\mos5src\disc2\acu.mnu
 
 acu-help.hlp : acu-help.txt
-        helpcom acu-help
+#        helpcom acu-help
+	@echo 'Cannot create acu-help.hlp now, using one from original discs'
+	copy ..\mos5src\disc2\acu-help.hlp 
+
 #--------------------------------------------------------------------------
 # Multi-file dependencies
 #--------------------------------------------------------------------------

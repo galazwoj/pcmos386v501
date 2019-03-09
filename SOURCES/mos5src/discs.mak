@@ -24,7 +24,7 @@ disc1:	$$$$MOS.SYS 		\
 	MSYS.COM 		\
 	disc1\README  		\
 	UPDAT501.SYS
-	&copy $? \pcmos386\install\disc1\.
+	&copy $? ..\..\install\disc1\.
 
 $$$$SHELL.SYS:	__SHELL.SYS   	
 	copy $? $*.sys
@@ -86,7 +86,7 @@ MOSFILES.EXE:			\
 #	disc 2
 #
 disc2:	auxfiles.exe
-	copy $? \pcmos386\install\disc2\.
+	copy $? ..\..\install\disc2\.
 
 auxfiles.exe:			\
 	$$286N.SYS		\
@@ -121,9 +121,9 @@ auxfiles.exe:			\
 	31TERM.SYS      	\
 	3ATERM.SYS      	\
 	52TERM.SYS      	\
-	disc2\ACU-HELP.HLP    	\
-	disc2\ACU.EXE         	\
-	disc2\ACU.MNU         	\
+	..\acu\ACU-HELP.HLP    	\
+	..\acu\ACU.EXE         	\
+	..\acu\ACU.MNU         	\
 	ANTERM.SYS      	\
 	ATTERM.SYS      	\
 	AVTERM.SYS      	\
@@ -131,9 +131,9 @@ auxfiles.exe:			\
 	disc2\BOX2.BIN        	\
 	ELTERM.SYS      	\
 	EXTERM.SYS      	\
-	disc2\HELP.EXE        	\
-	disc2\HELP.NDX        	\
-	disc2\HELP.TXT        	\
+	HELP.EXE        	\
+	HELP.NDX        	\
+	HELP.TXT        	\
 	disc2\HGTERM.SYS      	\
 	MINBRDPC.SYS    	\
 	disc2\PATCH.BIN       	\
@@ -236,12 +236,6 @@ $$SERIAL.SYS:       _SERIAL.SYS
 	copy $? $*.sys
 
 #$$KBUK3.SYS:        _KBUK3.SYS        	
-#ACU-HELP.HLP:      ACU-HELP.HLP      
-#ACU.EXE:           ACU.EXE           
-#ACU.MNU:           ACU.MNU           
-#HELP.EXE:          HELP.EXE          
-#HELP.NDX:          HELP.NDX          
-#HELP.TXT:          HELP.TXT          
 
 #
 #	disc 3
@@ -254,7 +248,7 @@ disc3:  	\
 	disc3\PATCHER.EXE     	\
 	disc3\README.DOC    	\
 	disc3\UPDATE6.DOC
-	&copy $? \pcmos386\install\disc3\.
+	&copy $? ..\..\install\disc3\.
 #
 #	disc 4
 #
@@ -293,9 +287,9 @@ disc4:  			\
 	31TERM.SYS              \
 	3ATERM.SYS              \
 	52TERM.SYS              \
-	disc2\ACU-HELP.HLP      \
-	disc2\ACU.EXE           \
-	disc2\ACU.MNU           \
+	..\acu\ACU-HELP.HLP     \
+	..\acu\ACU.EXE          \
+	..\acu\ACU.MNU          \
 	ADDDEV.COM              \
 	ADDTASK.COM             \
 	ALIAS.COM               \
@@ -326,9 +320,9 @@ disc4:  			\
 	disc1\HDSETUP.HLP       \
 	..\cutils\HDSETUP.MSG   \
 	disc4\HDSETUP.SUM       \
-	disc2\HELP.EXE          \
-	disc2\HELP.NDX          \
-	disc2\HELP.TXT          \
+	HELP.EXE          	\
+	HELP.NDX          	\
+	HELP.TXT          	\
 	disc2\HGTERM.SYS        \
 	..\import\IMPORT.EXE    \
 	INIT.COM                \
@@ -378,7 +372,7 @@ disc4:  			\
 	VIDPATCH.COM            \
 	VNA.SYS                 \
 	W7TERM.SYS              
-	&copy $? \pcmos386\install\disc4\.
+	&copy $? ..\..\install\disc4\.
 
 delfiles:
 	del $$$$SHELL.SYS
@@ -413,7 +407,7 @@ delfiles:
 	del $$SERIAL.SYS    
 
 clean:
-	cd \pcmos386\install
+	cd ..\..\install
 	-rmdir /S /Q disc1
 	-rmdir /S /Q disc2
 	-rmdir /S /Q disc3
