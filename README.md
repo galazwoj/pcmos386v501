@@ -29,9 +29,12 @@ Tools used
 * Microsoft MASM 5.1
 * Microsoft C 5.1
 * Borland make (tested with make from Borland C++ 4.5)
+* Borland tlib as Microsoft lib does not work under Windows Vista
 
 Goals
-* No dependence on Borland
-* Investigate rsa lib
-* Clean the repository a bit
-* Do not disturb the master repo (so it is why this is a branched repo)
+* No dependence on Borland C
+* No dependence on Turbo Pascal 3.x
+* No dependence on Aztec C 5.2
+* Reverse engineer source code of the rsa lib
+* Clean the source tree from duplicate or unused files
+ 
