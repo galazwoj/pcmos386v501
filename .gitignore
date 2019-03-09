@@ -1,0 +1,39 @@
+# Object files
+*.obj
+*.OBJ
+
+# Libraries
+*.lib
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+*.com
+*.bas
+*.sys
+*.exs
+*.exc
+*.bin
+*.ovl
+*.386
+*.vxd
+*.cpi
+
+# compressed files
+*.ex_
+*.sy_
+
+# misc files
+*.err
+*.map
+*.log
+boot.img
+*.ndx
+*.lst
+*.16
+*.crf
+
