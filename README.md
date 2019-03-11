@@ -29,12 +29,12 @@ Tools used
 * Microsoft MASM 5.1
 * Microsoft C 5.1
 * Borland make (tested with make from Borland C++ 4.5)
-* Borland tlib as Microsoft lib does not work under Windows Vista
+* Borland tlib as some versions of Microsoft lib does not work under Windows Vista
 
 Goals
-* No dependence on Borland C
-* No dependence on Turbo Pascal 3.x
-* No dependence on Aztec C 5.2
-* Reverse engineer source code of the rsa lib
+* No dependence on Borland C                 		(now exists only because make and tlib are used in some places)
+* No dependence on Turbo Pascal 3.x 			(dependency removed)
+* No dependence on Aztec C 5.2  			(this is for modem.exe, not sure if anyone still uses that)
+* Reverse engineer source code of the rsa lib           
 * Clean the source tree from duplicate or unused files
  
