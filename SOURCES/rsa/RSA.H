@@ -1,163 +1,188 @@
-/**********************************************************************
-*
-*     MODULE NAME:        RSA.H
-*
-*     TASK NAME:          none
-*
-*     MODULE REVISED:     1/15/91
-*
-*     PROJECT:            Baseline utilities
-*
-*     PROGRAMMER:         B. W. Roeser
-*
-*     CREATION DATE:      7/12/90
-*
-*
-*       (C) Copyright 1990-1992 The Software Link, Inc.
-*                   All Rights Reserved
-*
-*---------------------------------------------------------------------
-*
-* MODULE FUNCTION:      Header file containing definitions for routines
-*                   in RSA libraries (SMALL_C and LARGE_C)
-*
-*---------------------------------------------------------------------
-*
-*                         >> REVISION LOG <<
-*
-* REV DATE  PROG    DESCRIPTION OF THIS REVISION
-* --------  ----    ----------------------------
-* 7/12/90   BWR     Final code inspection for release 1.0 of RSA Custom
-*                   Software User Interface Library. (RSACLIB)
-*                   All library routines are now prototyped in this
-*                   header file.
-*
-* 7/20/90   BWR     New routine, "setup_i24()" added to library.
-*
-* 8/2/90    BWR     Function USR_message now returns a value.
-*
-* 9/11/90   BWR     Added prototypes for Expanded Memory Manager
-*                   functions as well as standard manifests and
-*                   typedefs.
-*
-* 1/14/91   BWR     Added definitions for routines "compress_file" and
-*                   "expand_file".
-*
-* 1/15/91   BWR     Code cleanup.
-*
-**********************************************************************
-*
-*/
+#include <stdio.h>
 
-/************ COMMENTED OUT !*/
+// EMM_present()
+#define EMM_NOT_PRESENT	0
+#define EMM_PRESENT	1
 
-//#ifndef FILE
-//#define FILE struct _iobuf
-//#endif
+/*Values for EMS status function */
+#define EMM_ERROR_00h   0x00     /* successful														*/
+#define EMM_NO_ERROR	EMM_ERROR_00h
+#define EMM_ERROR_80h   0x80     /* internal error                                                                                              		*/
+#define EMM_ERROR_81h   0x81     /* hardware malfunction                                                                                                 */
+#define EMM_ERROR_82h   0x82     /* busy -- retry later                                                                                                  */
+#define EMM_ERROR_83h   0x83     /* invalid handle                                                                                                       */
+#define EMM_ERROR_84h   0x84     /* undefined function requested by application                                                                          */
+#define EMM_ERROR_85h   0x85     /* no more handles available                                                                                            */
+#define EMM_ERROR_86h   0x86     /* error in save or restore of mapping context                                                                          */
+#define EMM_ERROR_87h   0x87     /* insufficient memory pages in system                                                                                  */
+#define EMM_ERROR_88h   0x88     /* insufficient memory pages available                                                                                  */
+#define EMM_ERROR_89h   0x89     /* zero pages requested                                                                                                 */
+#define EMM_ERROR_8Ah   0x8A     /* invalid logical page number encountered                                                                              */
+#define EMM_ERROR_8Bh   0x8B     /* invalid physical page number encountered                                                                             */
+#define EMM_ERROR_8Ch   0x8C     /* page-mapping hardware state save area is full                                                                        */
+#define EMM_ERROR_8Dh   0x8D     /* save of mapping context failed                                                                                       */
+#define EMM_ERROR_8Eh   0x8E     /* restore of mapping context failed                                                                                    */
+#define EMM_ERROR_8Fh   0x8F     /* undefined subfunction                                                                                                */
+#define EMM_ERROR_90h   0x90     /* undefined attribute type                                                                                             */
+#define EMM_ERROR_91h   0x91     /* feature not supported                                                                                                */
+#define EMM_ERROR_92h   0x92     /* successful, but a portion of the source region has been overwritten                                                  */
+#define EMM_ERROR_93h   0x93     /* length of source or destination region exceeds length of region allocated to either source or destination handle     */
+#define EMM_ERROR_94h   0x94     /* conventional and expanded memory regions overlap                                                                     */
+#define EMM_ERROR_95h   0x95     /* offset within logical page exceeds size of logical page                                                              */
+#define EMM_ERROR_96h   0x96     /* region length exceeds 1M                                                                                             */
+#define EMM_ERROR_97h   0x97     /* source and destination EMS regions have same handle and overlap                                                      */
+#define EMM_ERROR_98h   0x98     /* memory source or destination type undefined                                                                          */
+#define EMM_ERROR_9Ah   0x9A     /* specified alternate map register or DMA register set not supported                                                   */
+#define EMM_ERROR_9Bh   0x9B     /* all alternate map register or DMA register sets currently allocated                                                  */
+#define EMM_ERROR_9Ch   0x9C     /* alternate map register or DMA register sets not supported                                                            */
+#define EMM_ERROR_9Dh   0x9D     /* undefined or unallocated alternate map register or DMA register set                                                  */
+#define EMM_ERROR_9Eh   0x9E     /* dedicated DMA channels not supported                                                                                 */
+#define EMM_ERROR_9Fh   0x9F     /* specified dedicated DMA channel not supported                                                                        */
+#define EMM_ERROR_A0h   0xA0     /* no such handle name                                                                                                  */
+#define EMM_ERROR_A1h   0xA1     /* a handle found had no name, or duplicate handle name                                                                 */
+#define EMM_ERROR_A2h   0xA2     /* attempted to wrap around 1M conventional address space                                                               */
+#define EMM_ERROR_A3h   0xA3     /* source array corrupted                                                                                               */
+#define EMM_ERROR_A4h   0xA4     /* operating system denied access                                                                                       */
 
-//#define _iobuf FILE
+int     EMM_status(void);
+void far *EMM_get_page_frame(void);
+int     EMM_get_page_count(int *total_pages, int *unallocated_pages);
+int     EMM_allocate_pages(int num_logical_pages, int *handle);
+int	EMM_map_page(int handle, int phys_page_number, int logical_page_number);
+int	EMM_free_pages(int handle);
+int     EMM_get_version(int *version);
+int     EMM_save_page_map(int handle);
+int     EMM_restore_page_map(int handle);
+int     EMM_get_handle_count(int *num_of_emm_handles);
+int     EMM_get_handle_pages(int handle, int *num_of_logical_pages);
+int     EMM_get_handle_map(int *num_of_active_emm_handles, void *buffer);
+int     EMM_get_page_map(void *receive_buffer);
+int     EMM_set_page_map(void *current_buffer);
+int     EMM_get_set_page_map(void *current_buffer, void *receive_buffer);
+int     EMM_get_page_map_size(int *array_size);
+int     EMM_present(void);
+char	*EMM_error(int status);
 
-/******************************/
-#define FOREVER while(1)
-#define TRUE    -1
-#define FALSE   0
+// string
 
-typedef unsigned char   BOOL;
-typedef unsigned char   BYTE;
-typedef unsigned        WORD;
-typedef unsigned long   DWORD;
-/*
-    Function prototypes.
+void   	center(char *buf, unsigned len);
+int 	crc16(char *buf, int len);
+void 	decrypt(char *buf, int key);
+void 	encrypt(char *buf, int key);
+int 	index(char character, char *buf);
+void    squeeze(char *buf, int character);
+void    squeezen(char *buf, int character, int count);
+void 	strip_leading_blanks(char *buf);
+void 	strip_trailing_blanks(char *buf);
+char   *strstri(char *str1, char *str2);
+void 	zap(void *buf, unsigned size, char character);
 
-struct FILE        *da_open(char *, char *, int);
-*/
-long        get_file_size(char *);
-long        segment_to_absolute(long);
+// display
 
-unsigned    get_video_address();
-unsigned    hash(char *);
+// get_video_type()
+#define VIDEO_TYPE_VGA  0
+#define VIDEO_TYPE_EGA  1
+#define VIDEO_TYPE_CGA  2
+#define VIDEO_TYPE_HGC  3
+#define VIDEO_TYPE_NONE 4
 
-int         compress_file(char *, char *, int);
-int         conred(char *, int, int, int);
-int         convert_to_mono(int);
-int         copy_file(char *, char *);
-int         count_matching_files(char *);
-/*int         da_close(struct FILE *);
-int         da_read(struct FILE *, void *, unsigned);/*
-int         da_write(struct FILE *, void *, unsigned);
-int         display_help(char *, int);
-int         expand_file(char *, char *, int);
-int         get_string(char *, int, int);
-int         htoi(char *);
-int         index(char, char *);
-int         is_color_video();
-int         rdcpos();
-int         read_mouse(int, int *, int *, int *);
-int         readed(int, int, int, int, int, void *);
-int         restore_video_region(int, int) /*, void *);*/
-int         select_option(int, int, char **, int, char *, char *, unsigned char);
-int         USR_connect(char *, char *);
-int         USR_menu(int, int);
-int         USR_message(int, char **, int, int, int);
-int         USR_read(int, void *, int, int);
-int         USR_write(int, void *, int, int);
+// is_color_video()
+#define VIDEO_MONO	0
+#define VIDEO_COLOR	1
 
-void far    *absolute_to_segment(long);
-void far    *normalize_address(unsigned unsigned);
-void        center(char *, unsigned);
-void        convert_tabs(char *, char *, int, int);
-void        cursor_off();
-void        cursor_on();
-void        delay(int);
-void        display_copyright(char *);
-void        dputs(char *);
-void        draw_box(int, int, int, int, int);
-void        dump_buffer_to_screen(void *, int);
-/* void        ffill(struct FILE *, char, unsigned); */
-void        gtime(int *);
-void        input(char *, char *);
-void        just(char *, int, int);
-void        put_cpos(int);
-void        put_field(int, int, int, int, int, void *);
-void        putscr(void *, int);
-void        read_DTA(void *, int);
-void        *save_video_region(int, int);
-void        scr(int, int, int, int);
-void        scroll(int, int, int, unsigned, int);
-void        set_standard_colors();
-void        setup_i24();
-void        squeeze(char *, int);
-void        squeezen(char *, int, int);
-void        strip_leading_blanks(char *);
-void        strip_trailing_blanks(char *);
-void        update_time_and_date();
-void        USR_clear(int);
-void        USR_clear_message( void );
-void        USR_disconnect();
-void        wait_for_key(char *, char *);
-void        write_DTA(void *, int);
-void        zap(void *, unsigned, char);
+// read_mouse()
+#define MOUSE_PRESENT          	1
+#define MOUSE_NOT_PRESENT	0   
 
-char        *strstri(char *, char *);
-/* char        *get_line(char *, int, struct FILE *); */
-/*
-    Expanded Memory Manager function prototypes.
-*/
-int     EMM_present(void);                  /* EMM_PRES.C */
-int     EMM_status(void);                   /* EMM_40.C */
-void far *EMM_get_page_frame(void);         /* EMM_41.C */
-int     EMM_get_page_count(int *, int *);   /* EMM_42.C */
-int     EMM_allocate_pages(int, int*);      /* EMM_43.C */
-int     EMM_map_page(int, int, int);        /* EMM_44.C */
-int     EMM_free_pages(int);                /* EMM_45.C */
-int     EMM_get_version(int *);             /* EMM_46.C */
-int     EMM_save_page_map(int);             /* EMM_47.C */
-int     EMM_restore_page_map(int);          /* EMM_48.C */
-int     EMM_get_handle_count(int *);        /* EMM_4B.C */
-int     EMM_get_handle_pages(int, int*);    /* EMM_4C.C */
-int     EMM_get_handle_map(int *, void *);  /* EMM_4D.C */
-int     EMM_get_page_map(void *);           /* EMM_4E.C  - F: 4E00 */
-int     EMM_set_page_map(void *);           /* EMM_4E.C  - F: 4E01 */
-int     EMM_get_set_page_map(void *, void *); /* EMM_4E.C - F: 4E02 */
-int     EMM_get_page_map_size(int *);       /* EMM_4E.C  - F: 4E03 */
-
+// scr()
+#define CLEARSCREEN	0
+#define SET_CURSOR  	1
+#define CLEARROW  	2
+#define CLEARCOLUMN 	3
+#define CHANGEATTRIBUTE	4
+
+// scroll()
+#define SCROLL_UP	0
+#define SCROLL_DOWN	1
+
+void 	change_video_attribute(void far *pixel, int attribute, int count);
+int   	convert_to_mono(int attribute);
+void	cursor_off(void);
+void	cursor_on(void);
+int     da_close(FILE *);
+void  	display_copyright(char *str);
+void 	dputchar(int character);
+void 	dputs(char *s);
+int 	get_video_type(void);
+int	is_color_video(void);
+void    put_cpos(int cursor_pos);
+void 	putscr(void *screen_buf, int color);
+int     rdcpos(void);
+int	read_mouse(int action, int *button_status, int *rows, int *columns);
+int     restore_video_region(int pos1, int pos2, void *buf);
+void    *save_video_region(int pos1, int pos2);
+void    scr(int action, int cursor_pos, int length, int color);
+void    scroll(int cursor_pos1, int cursor_pos2, int num_of_lines, unsigned color, int direction);
+void 	set_standard_colors(void);
+void  	USR_disconnect(void);
+
+// bios & dos
+
+//get_CPU_type()
+#define CPU_8086	0
+#define CPU_80186       1
+#define CPU_80286       2
+#define CPU_80386       3
+#define CPU_80486       4
+
+//inkey()
+#define INKEY_NO_KEY 0
+#define INKEY_IS_KEY 1
+
+struct DATETIME {
+	int year;
+	int month;
+	int day;
+	int hour;
+	int minute;
+	int second;
+	int msecond;
+};
+
+void far *absolute_to_segment(unsigned long address);
+int	bios_disk_read(int drive, int cylinder, int head, int sector, int num_of_sectors, char *buffer);
+int  	bios_disk_reset(int drive);
+int 	bios_disk_status(void);  
+int	bios_disk_write(int drive, int cylinder, int head, int sector, int num_of_sectors, char *buffer);
+void  	delay(int time_ticks);
+unsigned long diskfree(int drive);
+int 	find_first_file(char *filespec, char *filename, unsigned *attribute);
+int 	find_next_file(char *filename, unsigned *attribute);
+int  	get_CPU_type(void); 	
+void 	get_current_path(char *path);
+int 	get_volume_label(int drive, char *label_name);
+int 	inkey(char *character, char *ext_character);
+int  	is_MOS(void);
+int 	MOS_wait(int timer_ticks);
+void far *normalize_address(unsigned seg, unsigned ofs);
+void   	read_DTA(void *buf, int count);
+void	read_PSP(void *psp_buffer);
+unsigned long 	segment_to_absolute(unsigned long segment_address);
+void  	setup_i24(void);
+int 	set_volume_label(int drive, char *label_name);
+void 	wait_for_key(char *character, char *ext_character);
+void    write_DTA(void *buf, int count);
+
+// file
+int    	copy_file(char *source_file, char *dest_file);
+int     count_matching_files(char *filespec);
+int    	da_close(FILE *file);
+FILE   *da_open(char *filename, char *mode, int record_size);
+void    ffill(FILE *file, char character, unsigned count);
+int 	get_file_attributes(char *filename, int *attributes);
+int 	get_file_date(char *filename, struct DATETIME *datetime);
+long    get_file_size(char *filename);
+char   *get_line(char *buf, int len, FILE *file);
+void    gtime(struct DATETIME *datetime);
+int 	set_file_attributes(char *filename, int attributes);
+int 	set_file_date(char *filename, struct DATETIME datetime);
