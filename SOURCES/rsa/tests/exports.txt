@@ -1,0 +1,547 @@
+exported name                                                       source file          #	compile	test	ok
+_EMM_allocate_pages....................................................emm_43.c		 0   	x	13    	x
+_EMM_error............................................................emm_err.c	         1   	x       13      x
+_EMM_free_pages........................................................emm_45.c          2   	x      	13      x
+_EMM_get_handle_count..................................................emm_4b.c          3   	x       13      x
+_EMM_get_handle_map....................................................emm_4d.c          4   	x       13      x
+_EMM_get_handle_pages..................................................emm_4c.c          5   	x       13      x
+_EMM_get_page_count....................................................emm_42.c          6   	x      	13      x
+_EMM_get_page_frame....................................................emm_41.c          7   	x      	13      x
+_EMM_get_page_map......................................................emm_4e.c          8   	x       13      x
+_EMM_get_page_map_size.................................................emm_4e.c          9   	x       13      x
+_EMM_get_set_page_map..................................................emm_4e.c         10   	x       13      x
+_EMM_get_version.......................................................emm_46.c          1   	x       13      x
+_EMM_map_page..........................................................emm_44.c          2   	x      	13      x
+_EMM_present.........................................................emm_pres.c          3   	x       x       x
+_EMM_restore_page_map..................................................emm_48.c          4   	x       13      x
+_EMM_save_page_map.....................................................emm_47.c          5   	x      	13      x
+_EMM_set_page_map......................................................emm_4e.c          6   	x       13      x
+_EMM_status............................................................emm_40.c          7   	x	13      x
+_EMS_id..............................................................emm_pres.c          8 	x     	13      x
+_GET_FILE_DATE.....................................................filedate.ASM          9      x	x     	x
+_INKEY................................................................inkey.ASM         20	x	x	x
+_MOS_wait..........................................................mos_wait.ASM     	 1 	x	x       x
+_SET_FILE_ATTRIBUTES...............................................setfattr.ASM          2	x	113     x
+_SET_FILE_DATE.....................................................filedate.ASM          3 	x	19   	x
+_SET_VOLUME_LABEL..................................................setlabel.ASM          4  	x	x      	x  	
+_USR_clear............................................................usr_clr.c          5 	x	should work         	
+_USR_clear_message....................................................usr_msg.c          6      x	31   	x
+_USR_connect.........................................................usr_conn.c          7     	x	x	x
+_USR_disconnect......................................................usr_disc.c          8 	x	27	x
+_USR_flags............................................................globals.c          9     	x	x  	x
+_USR_menu............................................................usr_menu.c         30      x   	90	x
+_USR_message..........................................................usr_msg.c          1      x     	x	x   
+_USR_read............................................................usr_read.c          2     	x	154   	x       	
+_USR_write...........................................................usr_writ.c          3    	x	154   	x       
+__$$cursor_sp..........................................................cursor.c          4 	x	78      x
+__$$cursor_stack.......................................................cursor.c          5  	x	78      x
+__$CGA_mode...........................................................globals.c          6   	x	29 	x
+__$Clear_the_field....................................................usr_clr.c          7  	x	25      x       	
+__$Fill_option_box...................................................select_o.c          8      x       154    	x       
+__$Place_color_bar...................................................select_o.c          9      x       154     x       
+__$Remove_color_bar..................................................select_o.c         40      x	154    	x 	
+__$asa_color..........................................................globals.c          1	x       29      x
+__$bar_color..........................................................globals.c          2      x       29      x
+__$bcolor.............................................................globals.c          3      x       29      x
+__$decode_string.....................................................compress.c          4      -       84      x
+__$fcolor.............................................................globals.c          5      x       29      x
+__$find_match........................................................compress.c          6      -       61      x
+__$hcolor.............................................................globals.c          7      x       29     	x
+__$help_count.........................................................globals.c          8    	x	29      x            
+__$hi_color...........................................................globals.c          9      x       29      x
+__$hp_list............................................................globals.c         50    	x	90      x
+__$input_code........................................................compress.c          1      -       61      x
+__$menu_color.........................................................globals.c          2      x       29     	x
+__$ml_color...........................................................globals.c          3      x       29      x
+__$output_code.......................................................compress.c          4      -       61      x
+__$read_video_region...............................................rw_video.ASM          5    	x	150   	x  
+__$tcolor.............................................................globals.c          6     	x	29   	x
+__$video_address......................................................globals.c          7    	x       x       x
+__$write_video_region..............................................rw_video.ASM          8     	x	150	x
+_absolute_to_segment..................................................abs2seg.c          9	x	x    	x
+_append_character....................................................compress.c         60      -       61	x
+_archive_file.........................................................ARCHIVE.C          1      x	x	x
+_back_door_exec....................................................backdoor.ASM          2   	x	x 	x
+_bios_disk_read....................................................biosdisk.ASM          3      x     	x 	x
+_bios_disk_reset...................................................biosdisk.ASM          4      x      	x       x
+_bios_disk_status..................................................biosdisk.ASM          5      x     	x       x
+_bios_disk_write...................................................biosdisk.ASM          6      x  	x       x
+_center................................................................center.c          7	x	x       x	
+_change_video_attribute.............................................chg_vid.ASM          8    	x	x	x	
+_code_value..........................................................compress.c          9      -       61      x
+_compress_file.......................................................compress.c         70      -       61	x	
+_conred................................................................conred.c          1   	x	x      	x
+_convert_tabs........................................................cvt_tabs.c          2  	x	x       x
+_convert_to_mono.....................................................cvt2mono.c          3    	x	151     x
+_copy_file...........................................................copyfile.c          4      x	x       x
+_count_matching_files................................................countfil.c          5  	x	x       x
+_crc16................................................................crc16.ASM          6	x	x       x
+_current_time.........................................................globals.c          7 	x	29	x
+_cursor_off............................................................cursor.c          8    	x	x	x
+_cursor_on.............................................................cursor.c          9    	x	78      x
+_da_close............................................................da_close.c         80      x       81     	x
+_da_open..............................................................da_open.c          1      x	x    	x	
+_da_read..............................................................da_read.c          2      x       81     	x
+_da_write............................................................da_write.c          3      x 	81     	x
+_de_archive_file.......................................................DE_ARC.C          4      x	x      	x
+_decode_stack........................................................compress.c          5      -       84      x
+_decrypt............................................................decrypt.ASM          6 	x	x     	x
+_delay..................................................................delay.c          7	x	x	x	
+_diskfree............................................................diskfree.c          8      x	x       x
+_display_copyright...................................................dispcopy.c          9    	x	x       x	
+_display_help........................................................disphelp.c         90    	x	x       x
+_dputchar..........................................................dputchar.ASM          1  	x	x    	x  		
+_dputs..................................................................dputs.c          2    	x	x     	x	
+_draw_box............................................................draw_box.c          3	x	x     	x
+_dump_buffer_to_screen...............................................dumpbuff.c          4  	x	x       x
+_encrypt............................................................encrypt.ASM          5   	x	86	x
+_errmsg_counter.......................................................globals.c          6 	x	29 	x
+_expand_file.........................................................compress.c          7      -       84	x
+_ffill..................................................................ffill.c          8	x	x	x   	
+_field_attrib.........................................................globals.c          9    	x	154     x
+_field_ids............................................................globals.c        100      x	154     x
+_field_length.........................................................globals.c          1      x	154     x
+_field_position.......................................................globals.c          2      x	154     x
+_field_type...........................................................globals.c          3      x	154     x
+_file_pointer_map.....................................................da_open.c          4      x	81	x
+_file_record_size.....................................................da_open.c          5      x	81      x
+_files_open...........................................................da_open.c          6      x	81      x
+_find_first_file...................................................find_1st.ASM          7    	x	75    	x
+_find_next_file....................................................findnext.ASM          8    	x	75      x
+_fp_help..............................................................globals.c          9    	x	28	x	 
+_fp_menu..............................................................globals.c        110      x	28	x 
+_get_CPU_type.......................................................get_cpu.ASM          1	x	x       x
+_get_current_path..................................................getcpath.ASM          2  	x	x      	x
+_get_file_attributes...............................................getfattr.ASM          3      x	x	x
+_get_file_size.......................................................getfsize.c          4      x	x      	x
+_get_line............................................................get_line.c          5	x	x      	x
+_get_string...........................................................get_str.c          6   	x	x     	x
+_get_video_type.....................................................get_vid.ASM          7      x	x      	x
+_get_volume_label....................................................getlabel.c          8    	x	x      	x
+_gtime..................................................................gtime.c          9  	x	x       x	
+_hash....................................................................hash.c        120   	x	x       x
+_htoi....................................................................htoi.c          1 	x	x      	x
+_ib_index............................................................compress.c          2      -	61      x
+_inbuff..............................................................compress.c          3      -	61	x
+_index..................................................................index.c          4	x	x       x
+_input..................................................................input.c          5     	x	x	x	       
+_input_byte_count....................................................compress.c          6    	-	61	x
+_is_MOS..............................................................is_mos.ASM          7	x	x  	x
+_is_color_video.......................................................iscolor.c          8      x	x       x
+_just....................................................................just.c          9    	x	x       x
+_killpath............................................................killpath.c        130     	x	x      	x
+_makepath............................................................makepath.c          1 	x	x       x      	
+_max_menus............................................................globals.c          2	x	90      x
+_menu_ids.............................................................globals.c          3      x     	90      x
+_menu_text............................................................globals.c          4      x	90      x
+_months...............................................................globals.c          5	x	29	x	
+_ndays................................................................globals.c          6     	x	29      x
+_normalize_address...................................................normaliz.c          7	x	x     	x
+_ob_index............................................................compress.c          8      -       61	x
+_outbuff.............................................................compress.c          9      -       61      x
+_prefix_code.........................................................compress.c        140      -       61      x
+_put_cpos............................................................put_cpos.c          1  	x	x    	x    	
+_put_field.............................................................putfld.c          2 	x	x       x
+_putscr................................................................putscr.c          3	x	x 	x
+_rdcpos................................................................rdcpos.c          4   	x	141    	x    	
+_read_DTA..........................................................read_dta.ASM          5 	x	130   	x
+_read_PSP..........................................................read_psp.ASM          6   	x	x	x	
+_read_mouse.............................................................mouse.c          7     	x	x     	x 	     	
+_readed................................................................readed.c          8      x	x       x
+_restore_video_region................................................rest_vid.c          9   	x	150    	x         
+_save_video_region...................................................save_vid.c        150  	x   	x   	x
+_scr......................................................................scr.c          1	x	x	x	
+_scroll................................................................scroll.c          2     	x	x     	x
+_segment_to_absolute..................................................seg2abs.c          3	x	59     	x
+_select_option.......................................................select_o.c          4      x	x	x
+_set_standard_colors.................................................set_stan.c          5 	x	27      x
+_set_tree............................................................treewalk.c          6     	x	x	x   
+_setup_i24.........................................................setupi24.ASM          7      x	x       x
+_squeeze..............................................................squeeze.c          8      x	x	x
+_squeezen............................................................squeezen.c          9    	x	x	x
+_strip_leading_blanks.................................................strip_l.c        160    	x	x      	x
+_strip_trailing_blanks................................................strip_t.c          1      x	x       x
+_strstri..............................................................strstri.c          2 	x	x      	x
+_update_time_and_date.................................................up_time.c          3      x	154     x   	     
+_wait_for_key........................................................wait4key.c          4	x	x	x	
+_walk_tree...........................................................treewalk.c          5  	x	156     x
+_write_DTA.........................................................writedta.ASM          6    	x	130   	x
+_zap......................................................................zap.c          7	x	x      	x
+                                                                                         
+abs2seg.c               Offset=00000010H                                            		x     	
+    _absolute_to_segment                                                                 	x
+                                                                                                x
+backdoor.ASM            Offset=00000180H                                               		x
+    _back_door_exec                                                                             x
+                                                                                                x
+biosdisk.ASM            Offset=00000290H                                                        x
+    _bios_disk_read                                                                             x
+    _bios_disk_reset                                                                            x
+    _bios_disk_status                                                                           x
+    _bios_disk_write                                                                            x
+                                                                                                x
+center.c                Offset=000003c0H                        				x
+    _center                                                                                     x
+                                                                                                x
+chg_vid.ASM             Offset=00000570H      							x
+    _change_video_attribute                                                                     x
+                                                                                                x
+conred.c                Offset=00000610H                                                        x
+    _conred                                                                                     x
+                                                                                                x
+copyfile.c              Offset=000008f0H                                                        x
+    _copy_file                                                                                  x
+                                                                                                x
+countfil.c              Offset=00000b40H                                            		x
+    _count_matching_files                                                                       x
+                                                                                                x
+crc16.ASM               Offset=00000ce0H                     					x
+    _crc16                                                                                      x
+                                                                                                x
+cursor.c                Offset=00000f80H                                                        x
+    __$$cursor_sp                                                                               x
+    __$$cursor_stack                                                   				x
+    _cursor_off                                                                                 x
+    _cursor_on                                                                                  x
+                                                                                                x
+cvt_tabs.c              Offset=000011b0H							x
+    _convert_tabs                                                                               x
+                                                                                                x
+cvt2mono.c              Offset=00001360H							x
+    _convert_to_mono                                                                            x
+                                                                                                x
+da_close.c              Offset=000014b0H                                                        x
+    _da_close                                                                                   x
+                                                                                                x
+da_open.c               Offset=00001670H                                                        x
+    _da_open                                                                                    x
+    _file_pointer_map                                                                           x
+    _file_record_size                                                                           x
+    _files_open                                                                                 x
+                                                                                                x
+da_read.c               Offset=00001870H                                                        x
+    _da_read                                                                                    x
+                                                                                                x
+da_write.c              Offset=00001ab0H                                                        x
+    _da_write                                                                                   x
+                                                                                                x
+decrypt.ASM             Offset=00001d10H             						x
+    _decrypt                                                                                    x
+                                                                                                z
+delay.c                 Offset=00001d90H    							z
+    _delay                                                                                      z
+                                                                                              	x
+disphelp.c              Offset=00001f30H                                                        x
+    _display_help                                                                               x
+                                                                                                x
+dputchar.ASM            Offset=00002ac0H       							x
+    _dputchar                                                                                   x
+                                                                                                x
+dputs.c                 Offset=00002c50H              						x
+    _dputs                                                                                      x
+ 				                                                                x
+dumpbuff.c              Offset=00002db0H                                                        x
+    _dump_buffer_to_screen                                                                      x
+                                                                                                x
+emm_40.c                Offset=000030a0H                                                   	x
+    _EMM_status                                                                                 x
+                                                                                                x
+emm_41.c                Offset=000031e0H                                                        x
+    _EMM_get_page_frame                                                                         x
+                                                                                                x
+emm_42.c                Offset=00003330H                                                        x
+    _EMM_get_page_count                                                                         x
+                                                                                                x
+emm_43.c                Offset=00003490H                                                        x
+    _EMM_allocate_pages                                                                         x
+                                                                                                x
+emm_44.c                Offset=00003600H                                                        x
+    _EMM_map_page                                                                               x
+                                                                                                x
+emm_45.c                Offset=00003760H                                                        x
+    _EMM_free_pages                                                                             x
+                                                                                                x
+emm_46.c                Offset=000038b0H                                                        x
+    _EMM_get_version                                                                            x
+                                                                                                x
+emm_47.c                Offset=00003a10H                                                        x
+    _EMM_save_page_map                                                                          x
+                                                                                                x
+emm_48.c                Offset=00003b70H                                                        x
+    _EMM_restore_page_map                                                                       x
+                                                                                                x
+emm_4b.c                Offset=00003cd0H                                                        x
+    _EMM_get_handle_count                                                                       x
+                                                                                                x
+emm_4c.c                Offset=00003e30H                                                        x
+    _EMM_get_handle_pages                                                                       x
+                                                                                                x
+emm_4d.c                Offset=00003fa0H                                                        x
+    _EMM_get_handle_map                                                                         x
+                                                                                                x
+emm_4e.c                Offset=00004120H                                                        x
+    _EMM_get_page_map                                                                           x
+    _EMM_get_page_map_size                                                                      x
+    _EMM_get_set_page_map                                                                       x
+    _EMM_set_page_map                                                                           x
+                                                                                                x
+emm_pres.c              Offset=000043f0H                                                       	x
+    _EMM_present                                                                                x
+    _EMS_id                                                                                     x
+                                                                                                x
+encrypt.ASM             Offset=00004580H                                                        x
+    _encrypt                                                                                    x
+                                                                                                x
+ffill.c                 Offset=00004600H							x
+    _ffill                                                                                      x
+                                                                                                x
+findnext.ASM            Offset=00004750H                                                        x
+    _find_next_file                                                                             x
+                                                                                                x
+find_1st.ASM            Offset=00004820H                                                        x
+    _find_first_file                                                                            x
+                                                                                                x
+getcpath.ASM            Offset=000048f0H              						x
+    _get_current_path                                                                           x
+                                                                    				x
+getfattr.ASM            Offset=00004980H                                                        x
+    _get_file_attributes                                                                        x
+                                                                                                x
+getfsize.c              Offset=00004a10H                                                        x
+    _get_file_size                                                                              x
+                                                  						x
+get_cpu.ASM             Offset=00004be0H                                                        x
+    _get_CPU_type                                                                               x
+                                                                                                x
+get_str.c               Offset=00004cc0H							x
+    _get_string                                                                                 x
+                                                                                                x
+get_vid.ASM             Offset=00004f30H                                                        x
+    _get_video_type                                                                             x
+                                                                                               	x
+globals.c               Offset=00005000H                                                        x
+    _USR_flags                                                                                  x
+    __$CGA_mode											x
+    __$asa_color                                                                                x
+    __$bar_color                                                                                x
+    __$bcolor                                                                                   x
+    __$fcolor                                                                                   x
+    __$hcolor                                                                                   x
+    __$help_count                                                                               x
+    __$hi_color                                                                                 x
+    __$hp_list                                                                                  x
+    __$menu_color                                                                               x
+    __$ml_color                                                                                 x
+    __$tcolor                                                                                   x
+    __$video_address                     							x	
+    _current_time 										x
+    _errmsg_counter                                                                             x
+    _field_attrib                                                                               x
+    _field_ids                                                                                  x
+    _field_length                                                                               x
+    _field_position                                                                             x
+    _field_type                                                                                 x
+    _fp_help                                                                                    x
+    _fp_menu                                                                                    x
+    _max_menus                                                         				x
+    _menu_ids                                                                                   x
+    _menu_text                                                                                  x
+    _months                                                                                     x
+    _ndays                                                                                      x
+                                                                                                x
+gtime.c                 Offset=00005350H                                     			x
+    _gtime                                                                                      x
+                                                                                                x
+hash.c                  Offset=000054e0H                    					x
+    _hash                                                                                       x
+                                                                                                x
+htoi.c                  Offset=00005650H     							x
+    _htoi                                                                                       x
+                                                                                                x
+index.c                 Offset=000057d0H     							x
+    _index                                                                                      x
+                                                                                                x
+input.c                 Offset=00005930H                                                        x
+    _input                                                                                      x
+                                                                                                x
+iscolor.c               Offset=00005b80H							x
+    _is_color_video                                                                             x
+                                                                                                x
+is_mos.ASM              Offset=00005d00H							x
+    _is_MOS                                                                                     x
+                                                                                                x
+just.c                  Offset=00005d80H							x
+    _just                                                                                       x
+                                                                                                x
+mos_wait.ASM            Offset=00005fc0H   							x
+    _MOS_wait                                                                                   x
+                                                                                                x
+mouse.c                 Offset=00006040H                                                        x
+    _read_mouse                                                                                 x
+                                                                                                x
+normaliz.c              Offset=000062f0H                       					x
+    _normalize_address                                                                          x
+                                                                                                x
+putfld.c                Offset=00006460H							x
+    _put_field                                                                                  x
+                                                                                                x
+putscr.c                Offset=00006990H   							x
+    _putscr                                                                                     x
+                                                                                                x
+put_cpos.c              Offset=00006b50H               						x
+    _put_cpos                                                                                   x
+                                                                                                x
+rdcpos.c                Offset=00006cc0H                                                        x
+    _rdcpos                                                                                     x
+                                                                                                x	
+read_dta.ASM            Offset=00006e10H							x
+    _read_DTA                                                                                   x
+                                                                                                x
+readed.c                Offset=00006ea0H                                                        x
+    _readed                                                                                     x
+                                                                                                x
+read_psp.ASM            Offset=00007b80H    							x
+    _read_PSP                                                                                   x
+                                                                                                x
+rest_vid.c              Offset=00007c00H                                                        x
+    _restore_video_region                                                                       x
+                                                                                                x
+rw_video.ASM            Offset=00007dd0H      							x
+    __$read_video_region                                                                        x
+    __$write_video_region                                                                       x
+                                                                                                x
+save_vid.c              Offset=00007f70H                    					x
+    _save_video_region                                                                          x
+                                                                                                x
+scr.c                   Offset=00008140H              						x
+    _scr                                                                                        x
+                                                                                                x
+scroll.c                Offset=000083f0H                                                        x
+    _scroll                                                                                     x
+                                                                                                x
+seg2abs.c               Offset=000085b0H    							x                          		
+    _segment_to_absolute                                                                        x
+                                                                                                x
+set_stan.c              Offset=00008720H       							x
+    _set_standard_colors                                                                        x
+                                                                                                x
+setupi24.ASM            Offset=00008990H                                                        x
+    _setup_i24                                                                                  x
+                                                                                                x
+squeeze.c               Offset=00008e10H      							x
+    _squeeze                                                                                    x
+                                                                                                x
+squeezen.c              Offset=00008f70H                                                        x
+    _squeezen                                                                                   x
+                                                                                                x
+strip_l.c               Offset=000090d0H                          				x
+    _strip_leading_blanks                                                                       x
+                                                                                                x
+strip_t.c               Offset=00009280H                                                        x
+    _strip_trailing_blanks                                                                      x
+                                                                                                x
+strstri.c               Offset=00009400H                 					x
+    _strstri                                                                                    x
+                                                                                                x
+up_time.c               Offset=00009640H                                                        x
+    _update_time_and_date                                                                       x
+                                                                                                x
+usr_clr.c               Offset=000098d0H        						x
+    _USR_clear                                                                                  x
+    __$Clear_the_field                                                                          x
+                                                                        			x                        
+usr_conn.c              Offset=00009bf0H                                                        x
+    _USR_connect                                                                                x
+                                                                                                x
+usr_disc.c              Offset=00009fb0H							x
+    _USR_disconnect                                                                             x
+                                                                                                x
+usr_msg.c               Offset=0000a120H                                                        x
+    _USR_clear_message                                                                          x
+    _USR_message                                                                                x
+                                                                                                x
+usr_menu.c              Offset=0000a840H                                                        x
+    _USR_menu                                                                                   x
+                                                                                                x
+usr_read.c              Offset=0000ae50H                     					x
+    _USR_read                                                                                   x
+                                                                                                x
+usr_writ.c              Offset=0000b1e0H                                                        x
+    _USR_write                                                                                  x
+                                                                                                x
+wait4key.c              Offset=0000b560H							x
+    _wait_for_key                                                                               x
+                                                                                                x
+writedta.ASM            Offset=0000b6e0H 							x
+    _write_DTA                                                                                  x
+                                                                                                x
+zap.c                   Offset=0000b760H                                                        x
+    _zap                                                                                        x
+                                                                                                x
+dispcopy.c              Offset=0000b880H							x
+    _display_copyright                                                                          x
+                                                                                                x
+filedate.ASM            Offset=0000ba30H                         				x
+    _GET_FILE_DATE                                                                              x
+    _SET_FILE_DATE                                                                              x
+                                                                                                x
+diskfree.c              Offset=0000bc00H							x
+    _diskfree                                                                                   x
+                                                                                                x
+ARCHIVE.C               Offset=0000bd90H                                                        x
+    _archive_file                                                                               x
+                                                                                                x
+DE_ARC.C                Offset=0000c230H                                                        x
+    _de_archive_file                                                                            x
+                                                                                                x
+setfattr.ASM            Offset=0000c830H							x
+    _SET_FILE_ATTRIBUTES                                                                        x
+                                                                                                x
+setlabel.ASM            Offset=0000c8b0H							x
+    _SET_VOLUME_LABEL                                                                           x
+                                                                                                x
+killpath.c              Offset=0000ca00H                     					x
+    _killpath                                                                                   x
+                                                                                                x
+getlabel.c              Offset=0000ce70H							x
+    _get_volume_label                                                                           x
+                                                                                               	x
+makepath.c              Offset=0000d0b0H                                                        x
+    _makepath                                                                                   x
+                                                                                                x
+compress.c              Offset=0000d3e0H                                                        -
+    __$decode_string                                                                            -
+    __$find_match                                                                               -
+    __$input_code                                                                               -
+    __$output_code                                                                              -
+    _append_character                                                                           -
+    _code_value                                                                                 -
+    _compress_file                                                                              -
+    _decode_stack                                                                               -
+    _expand_file                                                                                -
+    _ib_index                                                                                   -
+    _inbuff                                                                                     -
+    _input_byte_count                                                                           -
+    _ob_index                                                                                   -
+    _outbuff                                                                                    -
+    _prefix_code                                                                                -
+                                                                                                -
+treewalk.c              Offset=0000e570H                  					x
+    _set_tree                                                                                   x
+    _walk_tree                                                                                  x
+                                                                                                x
+inkey.ASM               Offset=0000ec50H							x
+    _INKEY                                                                                      x
+                                                                                                x
+get_line.c              Offset=0000ece0H							x
+    _get_line                                                                                   x
+                                                                                                x
+draw_box.c              Offset=0000ee70H							x
+    _draw_box                                                                                   x
+                                                                                                x
+select_o.c              Offset=0000f4a0H                                                        x
+    __$Fill_option_box                                                                          x
+    __$Place_color_bar                                                                          x
+    __$Remove_color_bar                                                                         x
+    _select_option                                                                              x
+ 

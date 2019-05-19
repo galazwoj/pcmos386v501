@@ -7,10 +7,10 @@ FILE *	fp_menu = NULL;
 FILE *	fp_help = NULL;
 int	max_menus = 0;
 int	errmsg_counter = 0;
-char	current_time[14] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+struct DATETIME	current_time = {0,0,0,0,0,0,0};
 int	USR_flags = 0;
 int	_$help_count = 0;
-int	_$hp_list = 0;
+struct HP_LIST *_$hp_list = 0;
 int	_$video_address = 0;
 int	_$fcolor = 0x70;
 int	_$bcolor = 0x71;
@@ -23,4 +23,12 @@ int	_$menu_color = 0x1f;
 int	_$ml_color = 0x1e;
 char	_$CGA_mode = 0;
 
-int	_$$cursor_stack[0x14];
+
+int	field_ids[MAX_FILES2];
+int	field_position[MAX_FILES2];
+int	field_type[MAX_FILES2];
+int	field_length[MAX_FILES2];
+int	field_attrib[MAX_FILES2];
+int	menu_ids[MAX_FILES2];	
+
+char 	menu_text[MENU_TEXT_SIZE];	

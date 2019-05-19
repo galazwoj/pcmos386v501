@@ -1,19 +1,40 @@
+ifdef _LARGE_
+.model large, C
+else
 .model small, C
+endif
+
 .code
 	PUBLIC	_$read_video_region
 	PUBLIC	_$write_video_region
 
 video_segment	dw	0
 
-column1		equ	[bp+4]
-row1		equ	[bp+6]
-column2		equ	[bp+8]
-row2		equ	[bp+0ah]
+if @DataSize eq 0
+row    		equ	[bp+4]
+column		equ	[bp+6]
+num_of_columns	equ	[bp+8]
+num_of_rows	equ	[bp+0ah]
 buf		equ	[bp+0ch]
 video_mode	equ	[bp+0eh]
+else
+row    		equ	[bp+6]
+column		equ	[bp+8]
+num_of_columns	equ	[bp+0ah]
+num_of_rows	equ	[bp+0ch]
+buf		equ	[bp+0eh]
+video_mode	equ	[bp+12h]
+endif
 
-;void	_$read_video_region (int column1, int row1, int column2, int row2, void * buf, int video_mode);
-_$read_video_region proc
+;void	_$read_video_region(int row, int column, int num_of_columns, int num_of_rows, int * buf, int video_mode);	
+
+;	for (i=0; i < num_of_rows; i++) {              
+;		for(j=0; j < num_of_columns; j++)    
+;	        	[video_seg:vide_ofs] => buf      
+;	     	[video_seg:vide_ofs] ++ 160     	 
+;	}                                                
+
+_$read_video_region proc	
 	push	bp
 	mov	bp,sp
 	push	ds
@@ -21,32 +42,36 @@ _$read_video_region proc
 	push	si
 	push	di
 	cld
-	call	near ptr set_video_segment
+	call	near ptr set_video_segment          
 	mov	cs:video_segment,ax
-	mov	ds,ax
-	mov	ax,column1
+	mov	ds,ax                                
+	mov	ax,row
 	dec	ax
 	mov	bx,ax
 	xchg	al,ah
-	shr	ax,1
+	shr	ax,1            			;128 * row
+	shl	bx,1					;32  * row
 	shl	bx,1
 	shl	bx,1
 	shl	bx,1
 	shl	bx,1
-	shl	bx,1
-	add	ax,bx
-	mov	bx,row1
-	dec	bx
-	shl	bx,1
-	add	bx,ax
-	mov	di,buf
-	mov	cx,video_mode
-	mov	dx,3daH
-L$2:
-	push	cx
-	mov	si,bx
-	mov	cx,column2
-	cmp	cs:video_segment,0b000H
+	add	ax,bx          				;(32 + 128)*row = 160*row   
+	mov	bx,column     	
+	dec	bx        		
+	shl	bx,1       	  	
+	add	bx,ax        				;bx = row * 160 + column * 2
+if @DataSize eq 0
+	mov	di,buf      				;[ES:DI] = seg buf : ofs buf
+else
+	les	di,buf      				;[ES:DI] = seg buf : ofs buf
+endif
+	mov	cx,num_of_rows
+	mov	dx,3daH                            	;VGA register
+L$2:                                                    
+	push	cx                                      
+	mov	si,bx        	                        
+	mov	cx,num_of_columns                       
+	cmp	cs:video_segment,0b000H               	
 	je	L$6
 	test	byte ptr video_mode,0ffH
 	je	L$6
@@ -68,7 +93,7 @@ L$5:
 L$6:
 rep 	movsw
 L$7:
-	add	bx,0a0H
+	add	bx,0a0H					;160
 	pop	cx
 	loop	L$2
 	pop	di
@@ -79,7 +104,14 @@ L$7:
 	ret
 _$read_video_region endp
 
-;void	_$write_video_region(int column1, int row1, int column2, int row2, void * buf, int video_mode);
+;void	_$write_video_region(int row, int column, int num_of_columns, int num_of_rows, int * buf, int video_mode);	
+
+;	for (i=0; i < num_of_rows; i++) {              
+;		for(j=0; j < num_of_columns; j++)    
+;	        	buf => [video_seg:vide_ofs]
+;	     	[video_seg:vide_ofs] ++ 160     	 
+;	}                                                
+
 _$write_video_region proc
 	push	bp
 	mov	bp,sp
@@ -91,7 +123,7 @@ _$write_video_region proc
 	call	near ptr set_video_segment
 	mov	cs:video_segment,ax
 	mov	es,ax
-	mov	ax,column1
+	mov	ax,row
 	dec	ax
 	mov	bx,ax
 	xchg	al,ah
@@ -102,17 +134,21 @@ _$write_video_region proc
 	shl	bx,1
 	shl	bx,1
 	add	ax,bx
-	mov	bx,row1
+	mov	bx,column
 	dec	bx
 	shl	bx,1
 	add	bx,ax
+if @DataSize eq 0
 	mov	si,buf
-	mov	cx,video_mode
+else
+	lds	si,buf
+endif
+	mov	cx,num_of_rows
 	mov	dx,3daH
 L$8:
 	push	cx
 	mov	di,bx
-	mov	cx,column2
+	mov	cx,num_of_columns
 	cmp	cs:video_segment,0b000H
 	je	L$12
 	test	byte ptr video_mode,0ffH
@@ -146,7 +182,7 @@ L$13:
 	ret
 _$write_video_region endp
 
-set_video_segment proc
+set_video_segment proc	near
 	push	bx
 	mov	bx,0b800H
 	int	11H

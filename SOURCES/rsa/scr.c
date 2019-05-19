@@ -7,13 +7,17 @@ void    scr(int action, int cursor_pos, int length, int color)
 	union REGS inregs, outregs;
 	int video_offset;
 
-	if (is_color_video == VIDEO_MONO)
-		video_seg = 0xB800;
-	else
+	if (is_color_video() == VIDEO_MONO)
 	{
 		video_seg = 0xB000;
 		color = convert_to_mono(color);
-	}		
+	}
+	else
+		video_seg = 0xB800;
+
+#ifndef	ORIGINAL_CODE
+	_$video_address = video_seg;
+#endif
 		
 	switch (action)
 	{
@@ -35,7 +39,7 @@ void    scr(int action, int cursor_pos, int length, int color)
 			inregs.h.ch = (char)(cursor_pos / 100 -1);
 			inregs.h.cl = (char)(cursor_pos % 100 -1);
 			inregs.x.dx = inregs.x.cx;
-			inregs.h.dl += (char)length -1;
+			inregs.h.dl += (char)(length -1);
 			int86(INTR_VIDEO, &inregs, &outregs);	// VIDEO - SCROLL UP WINDOW
 			put_cpos(cursor_pos);
 			break;
@@ -45,15 +49,15 @@ void    scr(int action, int cursor_pos, int length, int color)
 			inregs.h.ch = (char)(cursor_pos / 100 -1);
 			inregs.h.cl = (char)(cursor_pos % 100 -1);
 			inregs.x.dx = inregs.x.cx;
-			inregs.h.dh += (char)length -1;
+			inregs.h.dh += (char)(length -1);
 			int86(INTR_VIDEO, &inregs, &outregs);	// VIDEO - SCROLL UP WINDOW
 			put_cpos(cursor_pos);
 			break;
 		case CHANGEATTRIBUTE:	// direct row attribute change
 			put_cpos(cursor_pos);
-			video_offset  = ((int)(cursor_pos / 100)) * 10 - 10;			
+			video_offset  = ((int)(cursor_pos / 100)) * 0xa0 - 0xa0;			
 			video_offset += ((int)(cursor_pos % 100)) *  2 -  2; 
-			change_video_attribute(MK_FP(video_seg,	video_offset), color, length);
+			change_video_attribute(video_seg, video_offset, color, length);
 			break;
 		default:
 			;

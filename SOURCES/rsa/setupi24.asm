@@ -1,4 +1,9 @@
+ifdef _LARGE_
+.model large, C
+else
 .model small, C
+endif
+
 
 ERROR_VIDEO_OFFSET 	equ 5ccH
 ERROR_SCREEN_OFFSET	equ 0a0H
@@ -13,7 +18,7 @@ int24_msg 	db	0D6h, 12 dup (0C4h), ' Error ', 13 dup (0C4h), 0B7h	;upper_frame
 err_place	db	0BAh, 32 dup (20h), 0BAh			
 		db	0BAh, 32 dup (20h), 0BAh
 ifndef	ORIGINAL_CODE
-		db	0BAh, ' A)bort R)etry I)gnore F)ail:  ', 0BAh
+		db	0BAh, '(A)bort (R)etry (I)gnore (F)ail ', 0BAh
 else
 		db	0BAh, ' (A)bort, (R)etry or (I)gnore:  ', 0BAh
 endif
@@ -122,11 +127,11 @@ L$52:
 	movsb
 	stosb
 	loop	L$52
-	; save cursor pos
 	pop	di
 	add	di,ERROR_SCREEN_OFFSET
 	pop	cx
 	loop	L$51
+	; save cursor pos
 	mov	ah,3
 	xor	bh,bh
 	push	bp
@@ -138,7 +143,11 @@ L$53:
 	mov	ah,2
 	xor	bh,bh
 	mov	dh,0cH
+ifndef	ORIGINAL_CODE
+	mov	dl,36H	
+else
 	mov	dl,35H	
+endif
 	push	bp
 	int	10H
 	pop	bp
@@ -228,5 +237,91 @@ setup_i24	proc
 	pop	bp
 	ret
 setup_i24	ENDP
+
+comment $
+source:	http://www.ousob.com/ng/asm/ng641fc.php
+INT 24h (36)             Critical-Error Handler Address
+
+    Contains the address to which control is passed in response to a
+    "critical" (usually hardware) error. When a program is executed, DOS
+    copies this address into offset 12h through 15h of the Program Segment
+    Prefix.
+
+    When the critical error handling routine is invoked, the following
+    diagnostic information is available:
+
+     1.  Bit 7 of AH is clear if the error is related to a disk operation.
+         If bit 7 of AH is set, it usually means the error is not a disk
+         error (although an error in a disk's FAT can still result in bit
+         7 of AH being set).
+
+     2.  If Bit 7 of AH is clear, AL returns the disk drive ID number
+         (0=A, 1=B, etc.), and bits 0 through 2 of AH provide further
+         information, as follows:
+
+               Bit 2 1 0
+                   . . 0     Read error
+                   . . 1     Write error
+                   0 0 .     Error involving DOS system files
+                   0 1 .     Error involving the FAT
+
+     3.  BP:SI point to a device header control block.
+
+     4.  The low-order byte of DI provides the following information (the
+         high-order byte of DI is undefined):
+
+              00h      Write-protect error
+              01h      Invalid drive number
+              02h      Drive not ready
+              03h      Invalid command
+              04h      CRC error
+              05h      Bad request structure length
+              06h      Seek error
+              07h      Unknown medium; disk format not recognized
+              08h      Sector not found
+              09h      Printer out of paper
+              0Ah      Write error
+              0Bh      Read error
+              0Ch      General, nonspecific error
+
+     5.  The stack contains the complete register set of the program that
+         issued the DOS function call that ended in the critical error. To
+         retrieve this information, first perform the following
+         instructions:
+
+              PUSH     BP
+              MOV      BP,SP
+
+         The stack will then be structured as follows:
+
+          BP offset     Stack contents
+             00h        BP value that you PUSHed
+             02h        IP:CS of DOS service invoking critical error handler
+             06h        Flags of DOS service invoking critical error handler
+             08h        AX of program invoking DOS service
+             0Ah        BX of program invoking DOS service
+             0Ch        CX of program invoking DOS service
+             0Eh        DX of program invoking DOS service
+             10h        SI of program invoking DOS service
+             12h        DI of program invoking DOS service
+             14h        BP of program invoking DOS service
+             16h        DS of program invoking DOS service
+             18h        ES of program invoking DOS service
+             1Ah        IP:CS of program invoking DOS service
+             1Eh        Flags of program invoking DOS service
+
+    In reporting the condition to your program's user, do not use DOS
+    function calls above 0Ch. Doing so will destroy DOS's internal stack
+    and result in unpredictable behavior.
+
+    On exit from your error-handling routine, DOS will look for an return
+    code in AL and behave as follows:
+
+              AL        DOS action
+              0         Ignore the error
+              1         Retry the operation
+              2         Abort the program (issue INT 23h)
+	      3         Fail the operation	
+        $
 	END
 		

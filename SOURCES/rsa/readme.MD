@@ -1,2 +1,1 @@
-Preliminary attempt to reverse engineer rsa.lib
-It may contain bugs.
+An attempt to reverse engineer rsa.lib

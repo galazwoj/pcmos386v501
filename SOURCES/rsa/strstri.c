@@ -2,14 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define NULL	(void *)0
-
-char        *strstri(char *str1, char *str2)
+char   	*strstri(char *str1, char *str2)
 {
 	int k12;
-	char *s1, *s12, *s2;
-	int n1 = strlen(str1);
-	int n2 = strlen(str2);
+	char *s1, *s12, *s2;                          	
+	int n1 = strlen(str1);                    	
+	int n2 = strlen(str2);                        	
 	if (n1 == 0 || n2 == 0)
 		return NULL;
 

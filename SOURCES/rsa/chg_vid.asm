@@ -1,13 +1,25 @@
+ifdef _LARGE_
+.model large, C
+else
 .model small, C
+endif
+
 .code
 	PUBLIC	change_video_attribute
 
 ;void change_video_attribute(void far *pixel, int attribute, int count);
 change_video_attribute proc
+if @DataSize eq 0
 pixel_seg	equ [bp+4]
 pixel_ofs     	equ [bp+6]
 attribute	equ [bp+8]
 count		equ [bp+0ah]
+else
+pixel_seg	equ [bp+6]
+pixel_ofs     	equ [bp+8]
+attribute	equ [bp+0ah]
+count		equ [bp+0ch]
+endif
 	push	bp
 	mov	bp,sp
 	push	es

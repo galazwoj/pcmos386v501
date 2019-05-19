@@ -1,4 +1,9 @@
+ifdef _LARGE_
+.model large, C
+else
 .model small, C
+endif
+
 .code
 	PUBLIC	get_file_date
 	PUBLIC	set_file_date
@@ -6,9 +11,13 @@
 lastdate	dw 0
 lasttime	dw 0
 
+if @DataSize eq 0
 filename	equ	[bp+4]
 datetime	equ	[bp+6]
-
+else
+filename	equ	[bp+6]
+datetime	equ	[bp+0ah]
+endif
 ;int get_file_date(char *filename, struct DATETIME *datetime);
 get_file_date	proc
 	push	bp
@@ -16,7 +25,11 @@ get_file_date	proc
 	push	ds
 	push	si
 	mov	ax,3d00H
+if @DataSize eq 0
 	mov	dx,filename
+else
+	lds	dx,filename
+endif
 	int	21H			; DOS 2+ - OPEN - OPEN EXISTING FILE
 	jc	L$3
 	mov	bx,ax
@@ -26,7 +39,11 @@ get_file_date	proc
 	mov	cs:lastdate,dx
 	mov	ax,3e00H
 	int	21H                 	; DOS 2+ - CLOSE - CLOSE FILE
+if @DataSize eq 0
 	mov	si,datetime
+else
+	lds	si,datetime
+endif
 	mov	ax,cs:lastdate      	
 	and	ax,0fe00H
 	mov	cx,7
@@ -61,6 +78,10 @@ get_file_date	proc
 	shl	ax,1
 	mov	[si],ax        ; seconds
 	xor	ax,ax
+ifndef	ORIGINAL_CODE
+	add	si,2	
+	mov	[si],ax        ; mseconds
+endif
 L$3:
 	pop	si
 	pop	ds
@@ -68,13 +89,17 @@ L$3:
 	ret
 get_file_date	endp
 
-;int set_file_date(char *filename, struct DATETIME datetime);
+;int set_file_date(char *filename, struct DATETIME *datetime);
 set_file_date	proc
 	push	bp
 	mov	bp,sp
 	push	ds
 	push	si
+if @DataSize eq 0
 	mov	si,datetime
+else
+	lds	si,datetime
+endif
 	xor	ax,ax
 	mov	bx,[si]
 	sub	bx,7bcH
@@ -101,7 +126,11 @@ set_file_date	proc
 	or	ax,bx
 	mov	cs:lasttime,ax
 	mov	ax,3d02H
+if @DataSize eq 0
 	mov	dx,filename
+else
+	lds	dx,filename
+endif
 	int	21H          		; DOS 2+ - OPEN - OPEN EXISTING FILE
 	jb	L$4
 	mov	bx,ax

@@ -7,7 +7,7 @@ int    	da_close(FILE *file)
 	if (!files_open || !file)
 		return 0;
 	for (i=0; i < MAX_FILES; i++)
-		if (file->_ptr == file_pointer_map[i])
+		if (file == file_pointer_map[i])
 		{
 			file_pointer_map[i] = 0;
 			file_record_size[i] = 0;
@@ -15,4 +15,5 @@ int    	da_close(FILE *file)
 			fclose(file);
 			return -1;
 		}
+	return 0;
 }

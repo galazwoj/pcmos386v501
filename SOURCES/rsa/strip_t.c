@@ -3,9 +3,11 @@
 
 void 	strip_trailing_blanks(char *buf)
 {
+	int i;
 	int n = strlen(buf);
 	if (n == 0)
 		return;
-	while ((n-- >= 0) && *(buf+n) !=' ')
-	 	*(buf+n) = '\0';
+	i = n-1;
+	while ((i >= 0) && buf[i] == ' ')
+	 	buf[i--] = '\0';
 }

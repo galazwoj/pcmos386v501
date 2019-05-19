@@ -4,6 +4,37 @@
 #define MK_FP( seg,ofs ) (void far * )(((unsigned long)((unsigned long)(seg) << 16)) + ((unsigned long)(ofs)))
 #define MK_LA( seg,ofs )                              (((unsigned long)(seg) <<  4)  +  (unsigned long)(ofs))
 
+#define KEY_ESC		0x1b
+#define KEY_ENTER       0x0d
+#define KEY_TAB	        0x09
+#define KEY_BACKSPACE   0x08
+#define KEY_SPACEBAR    0x20
+#define KEY_F1          0x3b
+#define	KEY_F2          0x3c
+#define KEY_F3          0x3d
+#define KEY_F4          0x3e
+#define KEY_F5          0x3f
+#define KEY_F6          0x40
+#define KEY_F7          0x41
+#define KEY_F8          0x42
+#define KEY_F9          0x43
+#define KEY_F10         0x44
+#define KEY_F11         0x45
+#define KEY_F12         0x46
+#define KEY_UP          0x48
+#define KEY_DOWN        0x50
+#define KEY_LEFT        0x4b
+#define KEY_RIGHT       0x4d
+#define KEY_HOME        0x47
+#define KEY_END         0x4f
+#define KEY_PGUP        0x49
+#define KEY_PGDOWN      0x51
+#define KEY_INS         0x52
+#define KEY_DEL         0x53
+#define KEY_GREY_MINUS  0x4a
+#define KEY_GREY_PLUS   0x4e
+
+
 #define INTR_DOS				0x21
 #define	INTR_EMM				0x67
 #define	INTR_EQUIPMENT				0x11
@@ -44,36 +75,54 @@
 #define VIDEO_MONO	0
 #define VIDEO_COLOR	1
 
+struct DATETIME {
+	int year;           //10   0
+	int month;          // e   2
+	int day;            // c   4
+	int hour;           // a   6
+	int minute;         // 8   8
+	int second;         // 6   a
+	int msecond;        // 4   c
+};
+
+struct HP_LIST {
+	unsigned int a0;
+	int a1;
+	int a2;
+};
+
+#define __DATETIME_DEFINED__ 1
 extern 	int 	ndays[12];	 
 extern 	char 	*months[12];
-extern 	FILE *fp_menu;
-extern 	FILE *fp_help;
+extern 	FILE *	fp_menu;
+extern 	FILE *	fp_help;
 extern 	int	max_menus;
 extern 	int	errmsg_counter;
-extern 	char	current_time[14];
+extern 	struct 	DATETIME current_time;
 extern 	int	USR_flags;
 extern 	int	_$help_count;
-extern 	int	_$hp_list;
+extern 	struct 	HP_LIST *_$hp_list;
 extern 	int	_$video_address;
-extern 	int	_$fcolor;
-extern 	int	_$bcolor;
-extern 	int	_$hcolor;
-extern 	int	_$tcolor;
-extern 	int	_$hi_color;	
-extern 	int	_$bar_color;
-extern 	int	_$asa_color;	
-extern 	int	_$menu_color;
-extern 	int	_$ml_color;
 extern 	char	_$CGA_mode;
 
-extern 	unsigned int 	_$$cursor_sp;
-extern	int	_$$cursor_stack[0x14];
+void	_$read_video_region (int row, int column, int num_of_columns, int num_of_rows, int * buf, int video_mode);	
+void	_$write_video_region(int row, int column, int num_of_columns, int num_of_rows, int * buf, int video_mode);	
 
-void	_$read_video_region (int column1, int row1, int column2, int row2, void * buf, int video_mode);
-void	_$write_video_region(int column1, int row1, int column2, int row2, void * buf, int video_mode);
-
+void	_$Clear_the_field(int field);
 
 #define	MAX_FILES	10
-extern	int files_open;
-extern	char * file_pointer_map[MAX_FILES];
-extern	int file_record_size[MAX_FILES];
+extern	int 	files_open;
+extern	FILE * 	file_pointer_map[MAX_FILES];
+extern	int 	file_record_size[MAX_FILES];
+
+//#define	MAX_FILES2	0xa0
+#define	MAX_FILES2	0x100
+extern	int	field_ids[MAX_FILES2];
+extern	int	field_position[MAX_FILES2];
+extern	int	field_type[MAX_FILES2];
+extern	int	field_length[MAX_FILES2];
+extern  int	field_attrib[MAX_FILES2];
+extern	int	menu_ids[MAX_FILES2];	
+
+#define MENU_TEXT_SIZE	(0x50 *50)
+extern char 	menu_text[MENU_TEXT_SIZE];	

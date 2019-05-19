@@ -1,12 +1,24 @@
+ifdef _LARGE_
+.model large, C
+else
 .model small, C
+endif
+
 .code
 	PUBLIC	get_current_path
 
 ; void get_current_path(char *path);
 get_current_path proc
+if @DataSize eq 0
 path	equ	[bp+4]
+else
+path	equ	[bp+6]
+endif
 	push	bp
 	mov	bp,sp
+if @DataSize gt 0
+	push	ds
+endif
 	push	si
 	mov	si,path
 	mov	ah,19H
@@ -21,6 +33,9 @@ path	equ	[bp+4]
 	inc	dl
 	int	21H			; DOS 2+ - CWD - GET CURRENT DIRECTORY
 	pop	si
+if @DataSize gt 0
+	pop	ds
+endif
 	pop	bp
 	ret
 get_current_path endp

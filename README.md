@@ -1,4 +1,4 @@
-# This is the initial release of PC-MOS/386 v5.01; the latest released version. 
+# This is the modified release of PC-MOS/386 v5.01; the latest released version. 
 
 This tree:
 
@@ -9,7 +9,7 @@ This tree:
 * includes the cdrom driver from Rod Roark (sources)
 * maybe more
 
-* does atm NOT include the borland compiler/tools --  the only program it requires from Borland is make as
+* does NOT include the borland compiler/tools --  the only program it requires from Borland is make as
 Microsoft make is hopellesly lame.
 
 See also.....  https://en.wikipedia.org/wiki/PC-MOS/386
@@ -29,12 +29,12 @@ Tools used
 * Microsoft MASM 5.1
 * Microsoft C 5.1
 * Borland make (tested with make from Borland C++ 4.5)
-* Borland tlib as some versions of Microsoft lib does not work under Windows Vista
+* Borland tlib as some versions of Microsoft lib does not work under Windows Vista or later versions of Windows
 
 Goals
 * No dependence on Borland C                 		(now exists only because make and tlib are used in some places)
 * No dependence on Turbo Pascal 3.x 			(dependency removed)
 * No dependence on Aztec C 5.2  			(this is for modem.exe, not sure if anyone still uses that)
-* Reverse engineer source code of the rsa lib           
+* Reverse engineer source code of the rsa lib 		(done)
 * Clean the source tree from duplicate or unused files
  

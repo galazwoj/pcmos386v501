@@ -12,8 +12,12 @@ int     EMM_get_page_map(void *receive_buffer)
 	struct SREGS sregs;
 	inregs.h.ah = EMM_GET_OR_SET_PAGE_MAP;
 	inregs.h.al = GET_MAPPING;
+#ifdef M_I86LM
+	sregs.es = FP_SEG(receive_buffer);
+#else
 	segread(&sregs);
-	inregs.x.di = (unsigned)receive_buffer;
+#endif
+	inregs.x.di = FP_OFF(receive_buffer);
 	int86x(INTR_EMM, &inregs, &outregs, &sregs);
 	return (outregs.h.ah);
 }
@@ -24,8 +28,12 @@ int     EMM_set_page_map(void *current_buffer)
 	struct SREGS sregs;
 	inregs.h.ah = EMM_GET_OR_SET_PAGE_MAP;
 	inregs.h.al = SET_MAPPING;
+#ifdef M_I86LM
+	sregs.ds = FP_SEG(current_buffer);
+#else
 	segread(&sregs);
-	inregs.x.si = (unsigned)current_buffer;
+#endif
+	inregs.x.si = FP_OFF(current_buffer);
 	int86x(INTR_EMM, &inregs, &outregs, &sregs);
 	return (outregs.h.ah);
 }
@@ -36,9 +44,14 @@ int     EMM_get_set_page_map(void *current_buffer, void *receive_buffer)
 	struct SREGS sregs;
 	inregs.h.ah = EMM_GET_OR_SET_PAGE_MAP;
 	inregs.h.al = GET_SET_MAPPING;
+#ifdef M_I86LM
+	sregs.ds = FP_SEG(current_buffer);
+	sregs.es = FP_SEG(receive_buffer);
+#else
 	segread(&sregs);
-	inregs.x.si = (unsigned)current_buffer;
-	inregs.x.di = (unsigned)receive_buffer;
+#endif
+	inregs.x.si = FP_OFF(current_buffer);
+	inregs.x.di = FP_OFF(receive_buffer);
 	int86x(INTR_EMM, &inregs, &outregs, &sregs);
 	return (outregs.h.ah);
 }

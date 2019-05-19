@@ -1,13 +1,22 @@
+ifdef _LARGE_
+.model large, C
+else
 .model small, C
+endif
+
 .code
 	PUBLIC	dputchar
 
-cursor_pos	dw 0
+cursor_pos	dw ?
 video_segment	dw 0
 
 ;void dputchar(int character);
 dputchar proc
+if @DataSize eq 0
 character	equ	[bp+4]
+else
+character	equ	[bp+6]
+endif
 	push	bp
 	mov	bp,sp
 	push	es

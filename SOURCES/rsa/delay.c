@@ -1,9 +1,11 @@
 #include "rsa.h"
 
-void  	delay(int time_ticks)
+// time tick is in seconds
+
+void  	delay(int time_ticks)	
 {
+	int second;
 	struct DATETIME dt;
-	int seconds;
 
 	if (!time_ticks)
 		return;
@@ -15,17 +17,17 @@ void  	delay(int time_ticks)
 	}
 
 	gtime(&dt);
-	seconds = dt.second;
-	if (dt.msecond > 032)
+	second = dt.second;
+	if (dt.msecond > 50)
 		time_ticks++;
 
 	while (time_ticks > 0)
 	{
 		gtime(&dt);
-		if (seconds != dt.second)
+		if (second != dt.second)
 		{
 			time_ticks--;			
-			seconds == dt.second;			
+			second = dt.second;			
 		}
 	}
 }

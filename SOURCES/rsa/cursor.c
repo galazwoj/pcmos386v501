@@ -1,7 +1,8 @@
 #include "_rsa.h"
 #include "rsa.h"
 
-unsigned int 	_$$cursor_sp = 0xffff;
+static	unsigned int 	_$$cursor_sp = 0xffff;
+static	int		_$$cursor_stack[0x14];
 
 void	cursor_off(void)
 {
@@ -13,7 +14,8 @@ void	cursor_off(void)
 	int86(INTR_VIDEO, &regs, &regs);		// VIDEO - GET CURSOR POSITION AND SIZE
 	_$$cursor_stack[++_$$cursor_sp] = regs.x.cx;
 	regs.h.ah = 1;
-	regs.x.cx = 0x2000;
+	regs.h.bh = 0;
+	regs.x.cx = 0x2000;				// ??? why not 0x2020
 	int86(INTR_VIDEO, &regs, &regs);		// VIDEO - SET TEXT-MODE CURSOR SHAPE	
 }
 

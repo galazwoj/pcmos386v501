@@ -3,11 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifndef ORIGINAL_CODE
 static char EMM_message[80];
-char *EMM_message_start   = "EMM status: ";
-char *EMM_message_ok      = "successful";                            
-char *EMM_message_unknown = "unknown, code: ";
-char *EMM_message_err[]     = {
+static char EMM_message_start[]   = "EMM status: ";
+static char EMM_message_ok[]      = "successful";                            
+static char EMM_message_unknown[] = "unknown, code: ";
+static char *EMM_message_err[]     = {
   "internal error" 
  ,"hardware malfunction" 
  ,"busy -- retry later" 
@@ -63,3 +64,4 @@ char *EMM_error(int status)
 	}
 	return EMM_message;
 }
+#endif

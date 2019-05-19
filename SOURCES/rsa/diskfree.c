@@ -8,6 +8,6 @@ unsigned long diskfree(int drive)
 	inregs.h.ah = 0x36;
 	inregs.h.dl = (char)drive;
 	int86(INTR_DOS, &inregs, &outregs);
-	space = (outregs.x.ax * outregs.x.bx * outregs.x.cx) / 1024;
+	space = ((unsigned long)outregs.x.ax * (unsigned long)outregs.x.bx * (unsigned long)outregs.x.cx) / 1024;
 	return space;
 }

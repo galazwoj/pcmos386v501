@@ -2,17 +2,16 @@
 #include "rsa.h"
 #include <stdlib.h>
 
-int     restore_video_region(int pos1, int pos2, void *buf)
+int     restore_video_region(int pos, int dpos, int *buf)
 {
-	int column2 = pos2 % 100;
-	int row2    = pos2 / 100;
-	int column1 = pos1 % 100;
-	int row1    = pos1 / 100;	
+	int num_of_columns = dpos % 100;    	//  2
+	int num_of_rows    = dpos / 100;    	//  4
+	int column = pos % 100;       // 0a 	
+	int row    = pos / 100;	//  6
 	
 	if (!buf)
 		return 0;
-	_$write_video_region(column1, row1, column2, row2, buf, _$CGA_mode);
-//	_$write_video_region(row1, column1, column2, row2, buf, _$CGA_mode);	???
+	_$write_video_region(row, column, num_of_columns, num_of_rows, buf, _$CGA_mode & 0xff);	
 	free(buf);
 	return 1;
 }

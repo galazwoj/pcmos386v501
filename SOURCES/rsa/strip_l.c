@@ -10,7 +10,7 @@ void 	strip_leading_blanks(char *buf)
 	if (n == 0)
 		return;
 
-	while ((i < n) && *(buf+i) == ' ')
+	while ((i < n) && buf[i] == ' ')
 		i++; 
 		  	
 	k = i;
@@ -19,8 +19,8 @@ void 	strip_leading_blanks(char *buf)
 	
 	for (i=0; i < n; i++) 
 	{
-		*(buf+i) = *(buf+i+k);
-		*(buf+i+1) = '\0';
+		buf[i] = buf[i+k];
+		buf[i+1] = '\0';
 	}
 }                                                                    
 

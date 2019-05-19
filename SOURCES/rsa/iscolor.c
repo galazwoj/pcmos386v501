@@ -5,7 +5,7 @@ static char video_mode = 0;
 
 int	is_color_video(void)
 {
-	if (video_mode ==0)
+	if (video_mode == 0)
 	{
 		union REGS inregs, outregs;
 		int86(INTR_EQUIPMENT, &inregs, &outregs);

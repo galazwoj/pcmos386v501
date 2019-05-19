@@ -1,4 +1,9 @@
+ifdef _LARGE_
+.model large, C
+else
 .model small, C
+endif
+
 .code
 .386	
 

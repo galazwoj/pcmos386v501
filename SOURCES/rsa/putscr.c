@@ -1,18 +1,25 @@
-#include "rsa.h"
 #include "_rsa.h"
+#include "rsa.h"
 #include <stdlib.h>
 
-void putscr(void *screen_buf, int color)
+void putscr(char *screen_buf, int color)
 {
-	char *buf = malloc(0x0fa0);
-	char *c = screen_buf;
-	int i = 0;
-	do {
-		*(buf + i) = *c++;
-		*(buf + i+1) = (char) color;
-		i +=2;
-	} while (i < 0x0fa0);
+	int *buf;		
+	int i;                             	
+#ifndef ORIGINAL_CODE
+	if(!screen_buf)
+		return;
+#endif
+	buf = malloc(80*25*2);		
 
-	_$write_video_region(1, 1, 80, 25, buf, _$CGA_mode);
+#ifndef ORIGINAL_CODE
+	if(!buf)
+		return;
+#endif
+
+	for (i=0; i< 2000; i++)
+		buf[i] = (color << 8) | (int)(*screen_buf++);
+
+	_$write_video_region(1, 1, 80, 25, buf, _$CGA_mode & 0xff);
 	free(buf);
 }

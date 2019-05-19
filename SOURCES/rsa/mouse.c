@@ -1,10 +1,9 @@
-#include "rsa.h"
 #include "_rsa.h"
+#include "rsa.h"
 
-static int mouse_present;
-static int screen_x;
-static int screen_y;
-
+static int mouse_present = 0;
+static int screen_x = 1;
+static int screen_y = 1;
 
 int	read_mouse(int action, int *button_status, int *rows, int *columns)
 {
@@ -30,18 +29,26 @@ int	read_mouse(int action, int *button_status, int *rows, int *columns)
 		int86(INTR_MOUSE, &inregs, &outregs);   	// MS MOUSE v1.0+ - RETURN POSITION AND BUTTON STATUS
 		column = outregs.x.cx * 2;
 		row = outregs.x.dx * 2;
+
 		screen_x = column / 0x50;
 		screen_y = row / 0x18;
 		*button_status = outregs.x.bx;
+#ifndef ORIGINAL_CODE
+		if (column == 0 || row == 0)
+			mouse_present = 0;
+		else
+#endif		
 		mouse_present = 1;
 	}
-
 	if (mouse_present == 0)
 	{
 		*button_status = 0;
+#ifndef ORIGINAL_CODE
+		*rows = 0;
+		*columns = 0;
+#endif		
 		return MOUSE_NOT_PRESENT;
 	}
-	
 	if (action == 0 || action == 2)
 	{
 		inregs.h.ah = 3;
@@ -53,7 +60,6 @@ int	read_mouse(int action, int *button_status, int *rows, int *columns)
 		inregs.x.ax = 4;
 		int86(INTR_MOUSE, &inregs, &outregs);       	// MS MOUSE v1.0+ - POSITION MOUSE CURSOR
 	}
-
 	inregs.x.ax = 3;
 	int86(INTR_MOUSE, &inregs, &outregs);           	// MS MOUSE v1.0+ - RETURN POSITION AND BUTTON STATUS
 	*button_status = outregs.x.bx;

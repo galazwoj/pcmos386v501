@@ -3,7 +3,6 @@
 void    ffill(FILE *file, char character, unsigned count)
 {
 	while(count -- > 0)
-	{
 #if 1
 		putc(character, file);
 #else
@@ -12,5 +11,5 @@ void    ffill(FILE *file, char character, unsigned count)
 		else
 			_flsbuf(character, file);
 #endif
-	}
 }
+

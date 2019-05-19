@@ -5,25 +5,18 @@ char   *get_line(char *buf, int len, FILE *file)
 {
 	int i;
 	char * str;
-	int n;
-	char c;
+
+#ifndef	ORIGINAL_CODE
+	if (!buf || !len || !file)
+		return NULL;
+#endif
+
 	if (!(str = fgets(buf, len, file)))
 		return NULL;
 
-	n = strlen(buf);
+	i = strlen(buf) - 1;
 	
-	i = n-1;
-	
-	while (i >=0)
-	{
-		c = *(buf + i);
-	        if (c == ' ' || c == '\n' )
-		{
-			*(buf + i) = '\0';
-			i --;
-		}
-		else 
-			return str;
-	}
+	while (i >= 0 && (buf[i] == ' ' || buf[i]== 0xa))
+		buf[i--] = '\0';
 	return str;
 }
