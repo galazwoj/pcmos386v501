@@ -17,7 +17,6 @@
 *.sys
 *.exs
 *.exc
-*.bin
 *.ovl
 *.386
 *.vxd
