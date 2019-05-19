@@ -13,6 +13,12 @@ Set up env variables - run vars.bat from \pcmos386v5501\sources
 in sources\kernel
 * compile kernel - \bc45\bin\make -f kernel.mak
 
+in sources\rsa
+* clean            \bc45\bin\make -f rsasmall.mak clean
+* compile library- \bc45\bin\make -f rsasmall.mak
+* clean            \bc45\bin\make -f rsalarge.mak clean
+* compile library- \bc45\bin\make -f rsalarge.mak 
+
 in sources\ulib
 * compile library- \bc45\bin\make -f ulib.mak
 
@@ -30,8 +36,4 @@ in sources\import
 in sources\cutils
 * compile hdsetup - \bc45\bin\make -f hdsetup.mak
 * compile install - \bc45\bin\make -f install.mak
-
-
-
-
 
