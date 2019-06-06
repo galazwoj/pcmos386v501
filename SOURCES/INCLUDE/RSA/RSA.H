@@ -262,7 +262,7 @@ void    write_DTA(void *buf, int count);
 
 // file
 int 	archive_file(char *source_filename, char *out_name, int show_msg);
-int	compress_file(char *path, char *tmp_name, int show_msg);
+int	compress_file(char *filename, char *out_filename, int show_msg);
 int    	copy_file(char *source_file, char *dest_file);
 int     count_matching_files(char *filespec);
 int    	da_close(FILE *file);
@@ -270,7 +270,7 @@ FILE   *da_open(char *filename, char *mode, int record_size);
 int    	da_read(FILE *file,  void *buf, unsigned record_pos);
 int     da_write(FILE *file, void *buf, unsigned record_pos);
 int	de_archive_file(char *source_filename, char *out_name);
-int 	expand_file(char *tmp_name ,char *new_filename, int show_msg);
+int 	expand_file(char *filename ,char *new_filename, int show_msg);
 int 	find_first_file(char *filespec, char *filename, unsigned *attribute);
 int 	find_next_file(char *filename, unsigned *attribute);
 void    ffill(FILE *file, char character, unsigned count);

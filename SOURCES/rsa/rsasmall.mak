@@ -9,13 +9,9 @@
     	\masm51\bin\masm /Ml /z $&;
     	lib rsasmall -+$&.obj;
 
-.bin.obj:
- 	copy small\$&.bin $&.obj
-    	lib rsasmall -+$&.obj;
-
 #==== the main target
 
-rsasmall.lib :	emm string display misc file bios usr
+rsasmall.lib :	emm string display misc file bios usr 
 	-del rsasmall.bak
 	copy rsasmall.lib ..\libs
 
@@ -46,6 +42,7 @@ usr:		conred.obj disphelp.obj readed.obj select_o.obj up_time.obj usr_clr.obj us
 abs2seg.obj	: abs2seg.c	rsa.h  	_rsa.h
 archive.obj	: archive.c	rsa.h	
 center.obj	: center.c	rsa.h
+compress.obj	: compress.c	rsa.h
 conred.obj 	: conred.c	rsa.h	
 copyfile.obj	: copyfile.c	rsa.h
 countfil.obj	: countfil.c    rsa.h	
@@ -151,8 +148,6 @@ setfattr.obj	: setfattr.asm
 setlabel.obj	: setlabel.asm
 setupi24.obj	: setupi24.asm
 writedta.obj	: writedta.asm
-
-compress.obj	: small\compress.bin
 
 clean:
 	-del *.lib *.obj
