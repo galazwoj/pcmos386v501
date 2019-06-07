@@ -4,11 +4,13 @@
 
 # Libraries
 *.lib
+*.LIB
 
 # Shared objects (inc. Windows DLLs)
 *.dll
 
 # Executables
+*.bin
 *.exe
 *.out
 *.app

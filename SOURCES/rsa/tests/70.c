@@ -1,9 +1,9 @@
-#include <stdio.h>
+#include "rsa.h"
 
-#define NAME  "61"
 int main(void)
 {
-	puts("use " NAME " instead");
+	int result = compress_file("dir.txt", "dir.cmp", 1);
+	printf("result %d\n", result);
 	return 0;
 }
 

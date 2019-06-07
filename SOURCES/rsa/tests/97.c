@@ -1,9 +1,9 @@
-#include <stdio.h>
+#include "rsa.h"
 
-#define NAME  "84"
 int main(void)
 {
-	puts("use " NAME " instead");
+	int result = expand_file("dir.cmp", "dir.out", 1);
+	printf ("result %d\n", result);
 	return 0;
 }
 
